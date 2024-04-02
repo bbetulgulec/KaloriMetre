@@ -13,20 +13,34 @@
         android:layout_width="565dp"
         android:layout_height="918dp"
         app:layout_constraintBaseline_toBaselineOf="parent"
+        app:layout_editor_absoluteY="-40dp"
         app:srcCompat="@drawable/saglik"
-        tools:layout_editor_absoluteX="-57dp"
-        app:layout_editor_absoluteY="-40dp"/>
+        tools:layout_editor_absoluteX="-44dp" />
 
     <Button
-        style="@style/btn"
         android:id="@+id/button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="273dp"
+        android:layout_marginTop="304dp"
+        android:onClick="ilkbutton"
         android:text="KİLO TAKİP UYGULAMASI"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@drawable/salad"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="@+id/button"
+        app:layout_constraintStart_toStartOf="@+id/button"
         app:layout_constraintTop_toTopOf="parent"
-        android:onClick="ilkbutton"/>
+        app:layout_constraintVertical_bias="0.706" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

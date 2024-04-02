@@ -3,7 +3,7 @@ package com.betulgulec.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-
+import android.widget.Button;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -14,6 +14,10 @@ import com.betulgulec.app.R;
 
 public class girisyap extends AppCompatActivity {
 
+    private Button hesapolustur;
+    private Button girisyap;
+    private Button sifreunuttum;
+    private Intent gelenIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,9 +28,12 @@ public class girisyap extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
     }
 
     public void girisyap(View view){
+        //ilk kullanıcı kodlu sayfanın girişini oluştur
 
         Intent intent1=new Intent(this, ilkkullanici.class);
         startActivity(intent1);
@@ -41,6 +48,8 @@ public class girisyap extends AppCompatActivity {
     public void sifreunuttum(View view){
 
     }
+
+
 
 
 

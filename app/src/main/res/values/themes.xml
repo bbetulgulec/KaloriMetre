@@ -36,7 +36,7 @@
 
         <item name="backgroundTint">@color/green</item>
         <item name="iconTint">@color/white</item>
-      <!--  <item name="icon">@drawable/check</item> -->
+        <item name="icon">@drawable/check</item>
         <item name="iconSize">24dp</item>
         <item name="iconPadding">8dp</item>
         <item name="iconGravity">textStart</item>
@@ -44,6 +44,7 @@
         <item name="android:textColor">@color/white</item>
 
     </style>
+
 
 
 

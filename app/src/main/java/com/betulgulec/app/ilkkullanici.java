@@ -14,71 +14,74 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class ilkkullanici extends AppCompatActivity {
 
-
-
-    private Button btndegistir;
-
     private EditText editTextKilo, editTextBoy, editTextYas;
-
+    private RadioGroup radioGroupCinsiyet;
+    private MaterialButton btndegistir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_ilkkullanici);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-
-        });
+        initComponents();
 
 
+
+    }
+
+    private void initComponents() {
         editTextKilo = findViewById(R.id.editTextKilo);
         editTextBoy = findViewById(R.id.editTextBoy);
         editTextYas = findViewById(R.id.editTextYas);
-        btndegistir= findViewById(R.id.btndegistir);
+        radioGroupCinsiyet = findViewById(R.id.radioGroupCinsiyet);
+        btndegistir=findViewById(R.id.btndegistir);
 
-        checkInputs();
 
-    }
-
-    private void checkInputs() {
-        String kilo = editTextKilo.getText().toString().trim();
-        String boy = editTextBoy.getText().toString().trim();
-        String yas = editTextYas.getText().toString().trim();
-
-        // Kilosu, boyu ve yaşı girilmişse
-        if (!kilo.isEmpty() ) {
-            btndegistir.setEnabled(true); // Değiştir butonunu aktifleştir
-        } else {
-            btndegistir.setEnabled(false);
-            editTextKilo.setText("Kilo giriniz ");// Değiştir butonunu deaktifleştir
-        }
-
-        if (!boy.isEmpty() ) {
-            btndegistir.setEnabled(true); // Değiştir butonunu aktifleştir
-        } else {
-            btndegistir.setEnabled(false);
-            editTextKilo.setText("Boy giriniz ");// Değiştir butonunu deaktifleştir
-        }
-
-        if (!yas.isEmpty() ) {
-            btndegistir.setEnabled(true); // Değiştir butonunu aktifleştir
-        } else {
-            btndegistir.setEnabled(false);
-            editTextKilo.setText("Yas giriniz ");// Değiştir butonunu deaktifleştir
-        }
 
     }
-    public void degistir(View view){
-
-        Intent intent=new Intent(this, anasayfa.class);
-        startActivity(intent);
 
 
+    public void degistir(View view) {
+        boolean isValid = true;
+
+        if (radioGroupCinsiyet.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, "Cinsiyet seçiniz.", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+
+        if (editTextKilo.getText().toString().trim().isEmpty()) {
+            editTextKilo.setError("Kilo giriniz.");
+            isValid = false;
+        }
+
+        if (editTextBoy.getText().toString().trim().isEmpty()) {
+            editTextBoy.setError("Boy giriniz.");
+            isValid = false;
+        }
+
+        if (editTextYas.getText().toString().trim().isEmpty()) {
+            editTextYas.setError("Yaş giriniz.");
+            isValid = false;
+        }
+
+        if (isValid) {
+
+           btndegistir.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(ilkkullanici.this, anasayfa.class));
+                    finish();
+                }
+            });
+
+        }
     }
 }

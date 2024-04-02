@@ -6,81 +6,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputLayout;
 
-
 public class kayitol extends AppCompatActivity {
 
+    private TextInputLayout adLayout, soyadLayout, mailLayout, telefonLayout, passwordLayout;
     private Button btnkayitOl;
-    private TextInputLayout adLayout,soyadLayout,mailLayout,telefonLayout,passwordLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_kayitol);
-
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-
-        });
-
         initComponents();
-        registerEventHandlers();
     }
-
-    private void registerEventHandlers() {
-        btnkayitOl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isadValid=validateEditText(adLayout);
-                boolean issoyadValid=validateEditText(soyadLayout);
-                boolean ismailValid=validateEditText(mailLayout);
-                boolean istelefonValid=validateEditText(telefonLayout);
-                boolean ispasswordValid=validateEditText(passwordLayout);
-
-
-                if(!isadValid)
-                    adLayout.setError("Hatalı Kullanıcı Adı!");
-                else
-                    adLayout.setError(null);
-                if(!issoyadValid)
-                    soyadLayout.setError("Hatalı Kullanıcı Soyadı!");
-                else
-                    soyadLayout.setError(null);
-                if(!ismailValid)
-                    mailLayout.setError("Hatalı Mail!");
-                else
-                    mailLayout.setError(null);
-                if(!istelefonValid)
-                    telefonLayout.setError("Hatalı Kullanıcı Telefonu!");
-                else
-                    telefonLayout.setError(null);
-                if(!ispasswordValid)
-                    passwordLayout.setError("Hatalı Kullanıcı Şifresi!");
-                else
-                    passwordLayout.setError(null);
-
-
-                if(isadValid && issoyadValid && ismailValid && istelefonValid && ispasswordValid)
-                    Toast.makeText(kayitol.this, "Giriş Yapıldı ", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-    }
-    private boolean validateEditText(TextInputLayout layout) {
-        String input = layout.getEditText().getText().toString();
-        return input.length() > 1;
-    }
-
 
     private void initComponents() {
         adLayout = findViewById(R.id.adLayout);
@@ -89,13 +29,38 @@ public class kayitol extends AppCompatActivity {
         telefonLayout = findViewById(R.id.telefonLayout);
         passwordLayout = findViewById(R.id.passwordLayout);
         btnkayitOl = findViewById(R.id.btnkayitOl);
-
+        btnkayitOl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validateEditText(adLayout) && validateEditText(soyadLayout) &&
+                        validateEditText(mailLayout) && validateEditText(telefonLayout) &&
+                        validateEditText(passwordLayout)) {
+                    startActivity(new Intent(kayitol.this, girisyap.class));
+                    finish(); // Bu aktiviteyi kapat
+                } else {
+                    if (!validateEditText(adLayout)) {
+                        adLayout.setError("Lütfen Adınızı giriniz");
+                    }
+                    if (!validateEditText(soyadLayout)) {
+                        soyadLayout.setError("Lütfen Soyadınızı giriniz");
+                    }
+                    if (!validateEditText(mailLayout)) {
+                        mailLayout.setError("Lütfen Mail adresinizi giriniz");
+                    }
+                    if (!validateEditText(telefonLayout)) {
+                        telefonLayout.setError("Lütfen Telefon numaranızı giriniz");
+                    }
+                    if (!validateEditText(passwordLayout)) {
+                        passwordLayout.setError("Lütfen Şifre oluşturunuz ");
+                    }
+                    Toast.makeText(kayitol.this, "Lütfen tüm alanları doldurun.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
-    public void kayitol(View view){
-
-        Intent intent=new Intent(this, girisyap.class);
-        startActivity(intent);
-
+    private boolean validateEditText(TextInputLayout layout) {
+        String input = layout.getEditText().getText().toString().trim();
+        return !input.isEmpty();
     }
 }

@@ -2,6 +2,7 @@
     <string name="app_name">App</string>
 
 
+    <string name="default_spinner_item">Seçiniz</string>
     <string-array name="spinnerperiyot">
         <item>6 Ay</item>
         <item>3 Ay</item>
