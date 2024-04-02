@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.betulgulec.app.anasayfa">
+
+
+    <TextView
+        android:id="@+id/kilogosterge"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="61dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="434dp"
+        android:hint="DÜŞMEK İSTENİLEN KİLO"
+        android:textSize="25sp" />
+
+
+    <TextView
+        android:id="@+id/periyotsecimi"
+        android:layout_width="245dp"
+        android:layout_height="58dp"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="207dp"
+        android:layout_marginEnd="115dp"
+        android:layout_marginBottom="299dp"
+        android:text="Periyot seçimi "
+        android:textSize="25sp"
+        android:gravity="left"/>
+
+    <Spinner
+        android:id="@+id/spinnerperiyot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/periyotsecimi"
+        android:layout_marginTop="-295dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="100dp"
+        />
+
+
+    <TextView
+        android:id="@+id/spinnerperiyottext"
+        android:layout_width="252dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="302dp"
+        android:layout_marginEnd="108dp"
+        android:gravity="left"
+        android:text=" "
+        android:textSize="25sp" />
+
+
+    <TextView
+        android:id="@+id/gununkalorisi"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_above="@+id/linearLayout"
+
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="56dp"
+        android:hint="Günün Kalorisi"
+        android:textSize="25sp" />
+
+    <LinearLayout
+
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <ImageButton
+            android:id="@+id/home"
+            android:layout_width="100dp"
+            android:layout_height="85dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/home"
+            tools:layout_editor_absoluteX="6dp"
+            tools:layout_editor_absoluteY="565dp" />
+
+        <ImageButton
+            android:id="@+id/istatistik"
+            android:layout_width="100dp"
+            android:layout_height="85dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/stats" />
+        " />
+
+        <ImageButton
+            android:id="@+id/rapor"
+            android:layout_width="100dp"
+            android:layout_height="85dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/menu"
+            tools:layout_editor_absoluteX="135dp"
+            tools:layout_editor_absoluteY="142dp"
+            android:onClick="yemeklistesi"/>
+
+        <ImageButton
+            android:id="@+id/profil"
+            android:layout_width="100dp"
+            android:layout_height="85dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/profile"
+            tools:layout_editor_absoluteX="6dp"
+            tools:layout_editor_absoluteY="280dp" />
+
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

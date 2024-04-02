@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".girisyap"
+    android:orientation="vertical">
+
+
+    <TextView
+        style="@style/headText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp"
+        android:text="GİRİŞ YAP" />
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/salad"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
+        android:scaleType="centerCrop"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/mailLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/mail"
+            style="@style/btnMaterial"
+            android:hint="Mail :"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:counterEnabled="true"
+        app:counterMaxLength='15'
+        app:passwordToggleEnabled="true"
+        android:layout_marginBottom="20dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            style="@style/btnMaterial"
+            android:hint="Şifre :"
+            android:inputType="numberPassword"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/btnGiris"
+        style="@style/btn"
+        android:layout_width="172dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Giriş Yap"
+        android:onClick="girisyap"/>
+
+    <Button
+        android:id="@+id/btnKayit"
+        style="@style/btn"
+        android:layout_width="172dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="60dp"
+        android:layout_gravity="center"
+        android:paddingHorizontal="16dp"
+        android:text="Hesap Oluştur"
+        android:onClick="hesapolustur"/>
+
+
+    <Button
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:id="@+id/btnLogin"
+        android:textColor="#5DB075"
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="30dp"
+        android:gravity="bottom"
+        android:text="Şifreni mi unuttun ?"
+        android:textAllCaps="false"
+        android:textStyle="italic"
+        android:onClick="sifreunuttum"/>
+
+
+
+
+
+</LinearLayout>

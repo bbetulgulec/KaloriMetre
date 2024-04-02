@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.betulgulec.app.anasayfa">
+
+
+
+    <!--
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+    -->
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="240dp"
+        android:layout_height="232dp"
+
+        android:layout_centerInParent="true"/>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp"
+        android:layout_alignParentBottom="true">
+
+        <ImageButton
+            android:id="@+id/home"
+            android:layout_width="100dp"
+            android:layout_height="85dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/home"
+            tools:layout_editor_absoluteX="6dp"
+            tools:layout_editor_absoluteY="565dp" />
+
+        <ImageButton
+            android:id="@+id/istatistik"
+            android:layout_width="100dp"
+            android:layout_height="85dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/stats"
+            />                                                  " />
+
+        <ImageButton
+            android:id="@+id/rapor"
+            android:layout_width="100dp"
+            android:layout_height="85dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/menu"
+            tools:layout_editor_absoluteX="135dp"
+            tools:layout_editor_absoluteY="142dp" />
+
+        <ImageButton
+            android:id="@+id/profil"
+            android:layout_width="100dp"
+            android:layout_height="85dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/profile"
+            tools:layout_editor_absoluteX="6dp"
+            tools:layout_editor_absoluteY="280dp" />
+
+
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

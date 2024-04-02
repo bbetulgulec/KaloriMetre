@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">App</string>
+
+
+    <string-array name="spinnerperiyot">
+        <item>6 Ay</item>
+        <item>3 Ay</item>
+        <item>2 Hafta</item>
+    </string-array>
+</resources>

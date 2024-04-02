@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ilkkullanici"
+    android:orientation="vertical"
+    android:layout_marginTop="50dp">
+
+
+    <TextView
+        android:id="@+id/text"
+        style="@style/headText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kullanıcı Bilgileri"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp" />
+
+
+    <!-- CINSIYET BELIRTILEN BUTTON -->
+
+
+    <!-- Kilo seçeneği -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/editTextCinsiyet"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="150dp"
+            android:layout_weight="1"
+            android:text="Cinsiyet :"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupCinsiyet"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-150dp"
+            android:layout_marginRight="60dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+
+            <!-- Kadın seçeneği -->
+            <RadioButton
+                android:id="@+id/radioButtonKadin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="20dp"
+                android:backgroundTint="@color/green"
+                android:text="Kadın" />
+
+            <!-- Erkek seçeneği -->
+            <RadioButton
+                android:id="@+id/radioButtonErkek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Erkek" />
+
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kilo (kg):"
+            android:textSize="16sp"
+            android:layout_marginEnd="10dp"/>
+
+        <EditText
+            android:id="@+id/editTextKilo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="numberDecimal"
+            android:textSize="16sp"
+            android:hint="Örneğin: 70"
+            android:imeOptions="actionNext"/>
+
+    </LinearLayout>
+
+
+    <!-- Boy alanı -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Boy (cm):"
+            android:textSize="16sp"
+            android:layout_marginEnd="10dp"/>
+
+        <EditText
+            android:id="@+id/editTextBoy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="numberDecimal"
+            android:textSize="16sp"
+            android:hint="Örneğin: 175"
+            android:imeOptions="actionNext"/>
+
+    </LinearLayout>
+
+    <!-- Yaş alanı -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yaş:"
+            android:textSize="16sp"
+            android:layout_marginEnd="10dp"/>
+
+        <EditText
+            android:id="@+id/editTextYas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:textSize="16sp"
+            android:hint="Örneğin: 30"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="right"
+        android:layout_marginRight="50dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btndegistir"
+            style="@style/btnKayıt"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Değiştir"
+            android:onClick="degistir"/>
+    </LinearLayout>
+
+</LinearLayout>
