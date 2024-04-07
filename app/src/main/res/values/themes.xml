@@ -61,6 +61,16 @@
 
     </style>
 
+    <!-- Açık tema -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Diğer stil ayarları -->
+    </style>
+
+    <!-- Karanlık tema -->
+    <style name="AppTheme.Dark" parent="Theme.AppCompat">
+        <!-- Diğer stil ayarları -->
+    </style>
+
 
 
 
