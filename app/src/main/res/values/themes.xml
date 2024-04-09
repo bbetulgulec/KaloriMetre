@@ -1,11 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.App" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+
+    <!-- Açık tema -->
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Diğer stil ayarları -->
     </style>
 
-    <style name="Theme.App" parent="Base.Theme.App" />
+    <!-- Karanlık tema -->
+    <style name="AppTheme.Dark" parent="Theme.AppCompat">
+        <!-- Diğer stil ayarları -->
+    </style>
+
+
 
 
     <!-- BUTTON STYLE -->
@@ -58,18 +65,9 @@
         <item name="hintTextColor">#22090404</item>
         <item name="android:textColor">#000000</item>
 
-
     </style>
 
-    <!-- Açık tema -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
-        <!-- Diğer stil ayarları -->
-    </style>
 
-    <!-- Karanlık tema -->
-    <style name="AppTheme.Dark" parent="Theme.AppCompat">
-        <!-- Diğer stil ayarları -->
-    </style>
 
 
 
