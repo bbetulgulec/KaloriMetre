@@ -2,55 +2,65 @@ package com.betulgulec.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import com.betulgulec.app.R;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class girisyap extends AppCompatActivity {
 
-    private Button hesapolustur;
-    private Button girisyap;
-    private Button sifreunuttum;
-    private Intent gelenIntent;
+    private EditText editTextMail, editTextPassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_girisyap);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-
+        editTextMail = findViewById(R.id.mail);
+        editTextPassword = findViewById(R.id.password);
     }
 
-    public void girisyap(View view){
-        //ilk kullanıcı kodlu sayfanın girişini oluştur
+    public void girisyapmetod(View view) {
+        String email = editTextMail.getText().toString();
+        String password = editTextPassword.getText().toString();
 
-        Intent intent1=new Intent(this, ilkkullanici.class);
-        startActivity(intent1);
+        if (TextUtils.isEmpty(email)) {
+            editTextMail.setError("Lütfen e-posta adresinizi girin.");
+            editTextMail.requestFocus();
+            return;
+        }
 
+        if (TextUtils.isEmpty(password)) {
+            editTextPassword.setError("Lütfen şifrenizi girin.");
+            editTextPassword.requestFocus();
+            return;
+        }
+
+        // Kullanıcı giriş işlemleri
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Kullanıcı başarıyla giriş yaptıysa yapılacak işlemler
+                        Toast.makeText(girisyap.this, "Başarıyla giriş yaptınız.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(girisyap.this, anasayfa.class));
+                        finish();
+                    } else {
+                        // Giriş başarısız olduğunda yapılacak işlemler
+                        Toast.makeText(girisyap.this, "Giriş başarısız! Lütfen e-posta ve şifrenizi kontrol edin.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
-    public void hesapolustur(View view){
 
-        Intent intent2=new Intent(this, kayitol.class);
-        startActivity(intent2);
-
-    }
-    public void sifreunuttum(View view){
-
+    public void hesapolustur(View view) {
+        Intent intent = new Intent(this, kayitol.class);
+        startActivity(intent);
     }
 
-
-
-
-
+    public void sifreunuttum(View view) {
+        // Şifremi unuttum ekranına geçiş yap
+    }
 }

@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Giriş Yap"
-        android:onClick="girisyap"/>
+        android:onClick="girisyapmetod"/>
 
     <Button
         android:id="@+id/btnKayit"
