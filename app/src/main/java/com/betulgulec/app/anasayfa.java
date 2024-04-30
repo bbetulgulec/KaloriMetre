@@ -1,30 +1,47 @@
 package com.betulgulec.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import com.github.clans.fab.FloatingActionMenu;
+import com.github.clans.fab.FloatingActionButton;
 import java.util.ArrayList;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ProgressBar;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.List;
 public class anasayfa extends AppCompatActivity {
 
-    private ImageButton home,hedef,menu,profil;
+    private BottomNavigationView battomNavigationView;
+    private FrameLayout framelayout;
+
+    SharedPreferences sharedPreferences;
+    private boolean isAppInitialized;
+
+
 
     private ProgressBar progressBar;
     private int progressStatus = 0;
     private Handler handler = new Handler(Looper.getMainLooper());
-
 
 
     @Override
@@ -38,79 +55,48 @@ public class anasayfa extends AppCompatActivity {
             return insets;
         });
 
-        progressBar = findViewById(R.id.progressBar);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (progressStatus < 100) {
-                    progressStatus += 1;
-                    // Main thread içinde UI güncellemesi yap
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar.setProgress(progressStatus);
-                        }
-                    });
-                    try {
-                        // 100ms gecikme ile ProgressBar'ı güncelle
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
+
+
 
         initCompinant();
+        loadFragment(new AnasayfaFragment(), true);
+        navigationcontrol();
+
+
+
+
+
+
     }
 
 
-    public void initCompinant(){
+    private void loadFragment(Fragment fragment, boolean isAppInitialized) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        if (isAppInitialized) {
+            fragmentTransaction.add(R.id.frameLayout, fragment);
+        } else {
+            fragmentTransaction.replace(R.id.frameLayout, fragment);
+        }
+
+        fragmentTransaction.commit();
 
 
-        home=findViewById(R.id.home);
-        hedef=findViewById(R.id.hedef);
-        menu=findViewById(R.id.menu);
-        profil=findViewById(R.id.profil);
-
-        // ANASAYFA BUTONUNA BASARSA
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent =new Intent(anasayfa.this, anasayfa.class);
-                startActivity(intent);
-            }
-        });
-
-        //HEDEF BUTONUNA BASARSA
-        hedef.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // HEDEF BUTONUNA BASARSA
-                Intent intent = new Intent(anasayfa.this, hedef.class);
-                startActivity(intent);
-            }
-        });
-
-        //MENÜ BUTONUNA BASARSA
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(anasayfa.this, menu.class);
-                startActivity(intent);
-            }
-        });
-
-        profil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(anasayfa.this, ilkkullanici.class);
-                startActivity(intent);
-            }
-        });
+    }
 
 
+    private void loadFragment(Fragment fragment) {
+        //loadFragment(fragment,false);
+        loadFragment(fragment, false); // Varsayılan olarak isAppInitialized değerini false olarak ayarla
+    }
 
+
+    public void initCompinant() {
+
+        battomNavigationView = findViewById(R.id.bottomNavView);
+        framelayout = findViewById(R.id.frameLayout);
+        // progressBar = findViewById(R.id.progressBar);
     }
 
 
@@ -118,6 +104,51 @@ public class anasayfa extends AppCompatActivity {
 
 
 
+     public void navigationcontrol() {
+
+         battomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
 
+             @Override
+
+             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                 Fragment fragment;
+                 int itemId = item.getItemId();
+
+                 loadFragment(new AnasayfaFragment(),true);
+
+                 if (itemId == R.id.navAnasayfa) {
+                     loadFragment(new AnasayfaFragment());
+
+                 } else if (itemId == R.id.navIstatistik) {
+                     loadFragment(new HedefFragment());
+                 } else if (itemId == R.id.navMenu) {
+                     loadFragment(new MenuFragment());
+                 } else if (itemId == R.id.navProfil) {
+                     loadFragment(new ProfilFragment());
+                 } else {
+
+                     fragment = new AnasayfaFragment();
+                 }
+
+
+
+
+
+                 sharedPreferences = getSharedPreferences("MyPrefs", MainActivity.MODE_PRIVATE);
+                 boolean isAppInitialized = sharedPreferences.getBoolean("isAppInitialized", false);
+
+                 if (!isAppInitialized) {
+                     //Uygulama ilk kez başlatılıyorsa, gerekli işlemleri yapın
+                     SharedPreferences.Editor editor = sharedPreferences.edit();
+                     editor.putBoolean("isAppInitialized", true);
+                     editor.apply();
+                 }
+                 return true;
+             }
+         });
+
+
+    }
 }
+

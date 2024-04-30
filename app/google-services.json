@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "336280271488",
+    "firebase_url": "https://kalorimetre-4067f-default-rtdb.firebaseio.com",
+    "project_id": "kalorimetre-4067f",
+    "storage_bucket": "kalorimetre-4067f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:336280271488:android:a84b4f0b92489eb72f8465",
+        "android_client_info": {
+          "package_name": "com.betulgulec.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvVDh0wPCC3_L52C0BEPQ1gmmVXDNDPrM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

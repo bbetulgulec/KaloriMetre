@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HedefFragment"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
+        android:layout_marginBottom="469dp"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="Düşülmek istenilen kilo:"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/kilotext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint=""
+            android:imeOptions="actionNext"
+            android:inputType="numberDecimal"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="130dp"
+        android:layout_marginBottom="124dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:text="Lütfen istediğiniz kalori takipin zamanını belirleyin"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinnerperiyot"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_marginTop="170dp"
+        android:layout_marginBottom="368dp" />
+
+    <TextView
+        android:id="@+id/spinnerperiyottext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="353dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginBottom="336dp"
+        android:text="" />
+
+
+    <Button
+        android:id="@+id/button2"
+        style="@style/btnKayıt"
+        android:layout_width="197dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="146dp"
+        android:layout_marginEnd="68dp"
+        android:layout_marginTop="280dp"
+        android:layout_marginBottom="329dp"
+        android:text="Kalori Miktarı Belirle" />
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
+        android:layout_marginTop="360dp"
+        android:layout_marginBottom="85dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="Günlük Kalori"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/editTextKilo111"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint=""
+            android:imeOptions="actionNext"
+            android:inputType="numberDecimal"
+            android:textSize="16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="Verilecek kilo"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/editTextKilo11"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint=""
+            android:imeOptions="actionNext"
+            android:inputType="numberDecimal"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+
+
+
+
+
+    <!-- PERİYOT BELİRLEME  TEXT -->
+
+
+
+
+
+
+</FrameLayout>
