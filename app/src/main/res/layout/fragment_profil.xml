@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ProfilFragment">
 
 
@@ -166,6 +167,23 @@
             android:gravity="center"
             android:onClick="degistir"
             android:text="Değiştir" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="right"
+        android:layout_marginTop="560dp"
+        android:layout_marginRight="50dp">
+
+        <Button
+            android:id="@+id/btncikis"
+            app:backgroundTint="@color/green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="cıkıs"
+            android:gravity="center"
+            android:text="Profilden Çıkış Yap" />
     </LinearLayout>
 
 

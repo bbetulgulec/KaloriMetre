@@ -1,6 +1,7 @@
 package com.betulgulec.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,7 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class girisyap extends AppCompatActivity {
-
+    private FirebaseAuth auth;
+    private SharedPreferences sharedPreferences;
     private EditText editTextMail, editTextPassword;
 
     @Override
@@ -22,6 +24,14 @@ public class girisyap extends AppCompatActivity {
 
         editTextMail = findViewById(R.id.mail);
         editTextPassword = findViewById(R.id.password);
+
+        sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+
+        // Eğer kullanıcı daha önce oturum açmışsa ve bu bilgi sharedPreferences'te varsa, direkt ana sayfaya yönlendir
+        if (sharedPreferences.getBoolean("isLoggedIn", false)) {
+            startActivity(new Intent(girisyap.this, anasayfa.class));
+            finish();
+        }
     }
 
     public void girisyapmetod(View view) {
@@ -46,6 +56,10 @@ public class girisyap extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Kullanıcı başarıyla giriş yaptıysa yapılacak işlemler
                         Toast.makeText(girisyap.this, "Başarıyla giriş yaptınız.", Toast.LENGTH_SHORT).show();
+                        // Oturum bilgisini sharedPreferences'e kaydet
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean("isLoggedIn", true);
+                        editor.apply();
                         startActivity(new Intent(girisyap.this, anasayfa.class));
                         finish();
                     } else {
@@ -62,5 +76,5 @@ public class girisyap extends AppCompatActivity {
 
     public void sifreunuttum(View view) {
         // Şifremi unuttum ekranına geçiş yap
-    }
+}
 }
