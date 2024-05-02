@@ -44,6 +44,7 @@ public class ProfilFragment extends Fragment {
         MaterialButton btndegistir = rootView.findViewById(R.id.btndegistir);
         MaterialButton btncikis = rootView.findViewById(R.id.btncikis);
 
+
         editTextKilo = rootView.findViewById(R.id.editTextKilo);
         editTextBoy = rootView.findViewById(R.id.editTextBoy);
         editTextYas = rootView.findViewById(R.id.editTextYas);
@@ -61,15 +62,18 @@ public class ProfilFragment extends Fragment {
         btncikis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Clear session information from SharedPreferences
+                // Çıkış yapıldığında SharedPreferences'teki oturum bilgilerini kaldır
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.remove("isLoggedIn");
                 editor.apply();
 
-                // Sign out using FirebaseAuth
+                // FirebaseAuth ile çıkış yap
                 FirebaseAuth.getInstance().signOut();
 
-                // Redirect to the login screen
+                // Toast mesajı göster
+                Toast.makeText(getActivity(), "Çıkış yapıldı.", Toast.LENGTH_SHORT).show();
+
+                // Giriş ekranına yönlendir
                 Intent intent = new Intent(requireActivity(), girisyap.class);
                 startActivity(intent);
                 requireActivity().finish();
