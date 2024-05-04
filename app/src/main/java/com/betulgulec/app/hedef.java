@@ -2,7 +2,6 @@ package com.betulgulec.app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -40,18 +39,9 @@ public class hedef extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), "Sağlıklı Kal", Toast.LENGTH_SHORT).show();
 
-
-
     }
 
     public void init(){
-
-        spinnerperiyot=findViewById(R.id.spinnerperiyot);
-        spinnerperiyottext=findViewById(R.id.spinnerperiyottext);
-
-        adapterperiyot=ArrayAdapter.createFromResource(this,R.array.spinnerperiyot, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        adapterperiyot.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        spinnerperiyot.setAdapter(adapterperiyot);
 
 
     }

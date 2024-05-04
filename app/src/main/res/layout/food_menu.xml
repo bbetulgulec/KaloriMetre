@@ -5,20 +5,42 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Arama Kutusu -->
-    <EditText
-        android:id="@+id/searchEditText"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Aramak için yazın..."
-        android:padding="12dp"
-        android:textSize="18sp"
-        android:drawablePadding="8dp"
-        android:singleLine="true"
-        android:imeOptions="actionDone"
-        android:inputType="text"
-        android:maxLines="1"
-        android:layout_margin="16dp"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Arama Kutusu -->
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Aramak için yazın..."
+            android:gravity="left"
+            android:padding="12dp"
+            android:textSize="18sp"
+            android:drawablePadding="8dp"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- Arama Butonu -->
+        <Button
+            style="@style/btn"
+            android:id="@+id/btnAra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="Ara"
+            android:onClick="searchFood"/>
+
+    </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -35,6 +57,9 @@
             android:padding="16dp">
 
             <!-- Yemek Adı -->
+
+            <!-- Yemek Kalorisi -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,7 +83,6 @@
 
             </LinearLayout>
 
-            <!-- Yemek Kalorisi -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

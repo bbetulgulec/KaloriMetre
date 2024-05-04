@@ -1,5 +1,7 @@
 package com.betulgulec.app;
 
+import java.util.Map;
+
 public class User {
     private String ad;
     private String soyad;
@@ -11,6 +13,8 @@ public class User {
     private float height;
     private int age;
     private int targetCalories;
+    private Map<String, Object> dailydata; // Günlük veri
+    private Map<String, Object> weeklycalories; // Haftalık kaloriler
 
     // Boş kurucu metod
     public User() {
@@ -104,5 +108,25 @@ public class User {
 
     public void setTargetCalories(int targetCalories) {
         this.targetCalories = targetCalories;
+    }
+
+    // dailydata alanı için getter
+    public Map<String, Object> getDailydata() {
+        return dailydata;
+    }
+
+    // dailydata alanı için setter
+    public void setDailydata(Map<String, Object> dailydata) {
+        this.dailydata = dailydata;
+    }
+
+    // weeklycalories alanı için getter
+    public Map<String, Object> getWeeklycalories() {
+        return weeklycalories;
+    }
+
+    // weeklycalories alanı için setter
+    public void setWeeklycalories(Map<String, Object> weeklycalories) {
+        this.weeklycalories = weeklycalories;
     }
 }

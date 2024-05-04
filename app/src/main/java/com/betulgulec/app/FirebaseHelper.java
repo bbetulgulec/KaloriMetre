@@ -1,12 +1,7 @@
 package com.betulgulec.app;
 
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,7 +26,6 @@ public class FirebaseHelper {
     }
 
     // Kullanıcının ek bilgilerini kaydet
-
     public void saveAdditionalUserInfoRealtime(String userId, String gender, float weight, float height, int age, int targetCalories) {
         // Kullanıcı bilgilerini User nesnesine yerleştir
         Map<String, Object> additionalInfo = new HashMap<>();
@@ -60,62 +54,14 @@ public class FirebaseHelper {
         }
     }
 
-    public void addFoodItemToTodaysFood(String userId, String foodCategory, String foodName, int foodCalories) {
-        DatabaseReference userRef = mDatabase.child("users").child(userId);
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String todaysDate = dateFormat.format(calendar.getTime());
-        DatabaseReference todaysFoodRef = userRef.child("dailydata").child(todaysDate).child("todaysfood").push();
-
-        // Yemeğin kalorisini ve ID'sini ekleyin
-        Map<String, Object> foodInfo = new HashMap<>();
-        foodInfo.put("calories", foodCalories);
-        foodInfo.put("name", foodName);
-
-        todaysFoodRef.setValue(foodInfo);
-    }
-
-    // Yemek ID'si oluşturur
-    private String generateFoodItemId(String userId, String foodCategory, String foodName) {
-        // Burada yemek ID'si oluşturun, örneğin: userId_foodCategory_foodName
-        return userId + "_" + foodCategory + "_" + foodName;
-    }
-
-    public interface UserTargetCaloriesListener {
-        void onUserTargetCaloriesReceived(int targetCalories);
-
-        void onError(String errorMessage);
-    }
-
-    public void getUserTargetCalories(String userId, UserTargetCaloriesListener listener) {
-        DatabaseReference userRef = mDatabase.child("users").child(userId);
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    int targetCalories = snapshot.child("targetCalories").getValue(Integer.class);
-                    listener.onUserTargetCaloriesReceived(targetCalories);
-                } else {
-                    listener.onError("User not found");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                listener.onError(error.getMessage());
-            }
-        });
-    }
-
     // Kullanıcının hedef kalorisini kaydet
-
     public void saveUserTargetCalories(String userId, int targetCalories) {
         // Hedef kaloriyi Map yapısında yerleştir
         Map<String, Object> targetCaloriesMap = new HashMap<>();
         targetCaloriesMap.put("targetCalories", targetCalories);
 
         // DatabaseReference kullanarak veriyi belirtilen yola (path) yerleştir
-        mDatabase.child("users").child(userId).child("targetCalories").updateChildren(targetCaloriesMap);
+        mDatabase.child("users").child(userId).updateChildren(targetCaloriesMap);
     }
 
     // Günlük kalori ihtiyacını hesapla

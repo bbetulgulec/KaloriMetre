@@ -102,6 +102,9 @@ public class ProfilFragment extends Fragment {
             // Kullanıcı bilgilerini Firebase Realtime Database'e kaydet
             firebaseHelper.saveAdditionalUserInfoRealtime(userId, gender, weight, height, age, dailyCalorieNeed);
 
+            // Hedef kaloriyi güncelle
+            firebaseHelper.saveUserTargetCalories(userId, dailyCalorieNeed);
+
             // Hedef sayfasına veriyi gönder
             Intent intent = new Intent(getActivity(), anasayfa.class);
             intent.putExtra("dailyCalorieNeed", dailyCalorieNeed);
@@ -110,6 +113,8 @@ public class ProfilFragment extends Fragment {
             getActivity().finish(); // Fragment'ın bağlı olduğu aktiviteyi sonlandır
         }
     }
+
+
 
     private void cikisYap() {
         FirebaseAuth.getInstance().signOut();

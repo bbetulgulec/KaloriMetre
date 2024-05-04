@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,30 +5,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MenuFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- Arama Kutusu ve Butonu -->
+    <include layout="@layout/food_menu" />
+
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
 
+    <!-- Floating Action Menu -->
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/floatingMenu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        app:menu_labels_ellipsize="end"
-        app:menu_labels_singleLine="true"
-        app:menu_fab_label="iptal"
-        app:menu_icon="@drawable/arti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
         app:menu_animationDelayPerItem="0"
         app:menu_colorNormal="@color/green"
         app:menu_colorPressed="@color/white"
         app:menu_colorRipple="@color/green"
-        android:layout_marginBottom="140dp"
-        android:padding="10dp"
-        app:menu_fab_size="normal">
+        app:menu_fab_label="iptal"
+        app:menu_fab_size="normal"
+        app:menu_icon="@drawable/arti"
+        app:menu_labels_ellipsize="end"
+        app:menu_labels_singleLine="true">
 
+        <!-- Floating Action Buttons -->
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_Icecek"
             android:layout_width="84dp"
@@ -59,10 +64,6 @@
             app:fab_colorNormal="@color/white"
             app:fab_label="Tatlı"
             app:fab_size="mini" />
-
-
-
-
 
     </com.github.clans.fab.FloatingActionMenu>
 </FrameLayout>
