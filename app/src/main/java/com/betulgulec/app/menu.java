@@ -7,9 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.FirebaseDatabase;
 
 public class menu extends AppCompatActivity {
-
+    private RecyclerView recyclerView;
+    private FirebaseDatabase database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,5 +24,9 @@ public class menu extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+    private void initComponents() {
+        recyclerView = findViewById(R.id.recyclerView);
+        database = FirebaseDatabase.getInstance();
     }
 }

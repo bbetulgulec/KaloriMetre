@@ -10,7 +10,7 @@ public class User {
     private float weight;
     private float height;
     private int age;
-
+    private int targetCalories;
 
     // Boş kurucu metod
     public User() {
@@ -96,5 +96,13 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public int getTargetCalories() {
+        return targetCalories;
+    }
+
+    public void setTargetCalories(int targetCalories) {
+        this.targetCalories = targetCalories;
     }
 }

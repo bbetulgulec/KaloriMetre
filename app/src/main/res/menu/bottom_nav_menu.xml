@@ -7,24 +7,24 @@
         android:title="Anasayfa"
         android:layout_width="wrap_content"
         android:layout_height ="wrap_content"
-        android:icon="@drawable/arti"
+        android:icon="@drawable/anasayfalogo"
         />
     <item
         android:id="@+id/navIstatistik"
         android:title="Istatistik"
         android:layout_width="wrap_content"
         android:layout_height ="wrap_content"
-        android:icon="@drawable/arti"/>
+        android:icon="@drawable/istatistiklogo"/>
     <item
         android:id="@+id/navMenu"
         android:title="Menü"
         android:layout_width="wrap_content"
         android:layout_height ="wrap_content"
-        android:icon="@drawable/arti"/>
+        android:icon="@drawable/menulogo"/>
     <item
         android:id="@+id/navProfil"
         android:title="Profil"
         android:layout_width="wrap_content"
         android:layout_height ="wrap_content"
-        android:icon="@drawable/arti"/>
+        android:icon="@drawable/profillogo"/>
 </menu>

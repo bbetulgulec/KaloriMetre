@@ -1,15 +1,14 @@
 package com.betulgulec.app;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.Spinner;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,30 +18,18 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import com.github.clans.fab.FloatingActionMenu;
-import com.github.clans.fab.FloatingActionButton;
-import java.util.ArrayList;
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.ProgressBar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.List;
 public class anasayfa extends AppCompatActivity {
 
     private BottomNavigationView battomNavigationView;
     private FrameLayout framelayout;
-
     SharedPreferences sharedPreferences;
     private boolean isAppInitialized;
-
-
-
+    private TextView textViewHedef;
     private ProgressBar progressBar;
     private int progressStatus = 0;
     private Handler handler = new Handler(Looper.getMainLooper());
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,20 +42,11 @@ public class anasayfa extends AppCompatActivity {
             return insets;
         });
 
-
-
-
         initCompinant();
         loadFragment(new AnasayfaFragment(), true);
         navigationcontrol();
 
-
-
-
-
-
     }
-
 
     private void loadFragment(Fragment fragment, boolean isAppInitialized) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -81,74 +59,58 @@ public class anasayfa extends AppCompatActivity {
         }
 
         fragmentTransaction.commit();
-
-
     }
-
 
     private void loadFragment(Fragment fragment) {
         //loadFragment(fragment,false);
         loadFragment(fragment, false); // Varsayılan olarak isAppInitialized değerini false olarak ayarla
     }
 
-
     public void initCompinant() {
 
         battomNavigationView = findViewById(R.id.bottomNavView);
         framelayout = findViewById(R.id.frameLayout);
-        // progressBar = findViewById(R.id.progressBar);
     }
 
+    public void navigationcontrol() {
 
+        battomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
+            @Override
 
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment;
+                int itemId = item.getItemId();
 
+                loadFragment(new AnasayfaFragment(),true);
 
-     public void navigationcontrol() {
+                if (itemId == R.id.navAnasayfa) {
+                    loadFragment(new AnasayfaFragment());
 
-         battomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                } else if (itemId == R.id.navIstatistik) {
+                    loadFragment(new HedefFragment());
+                } else if (itemId == R.id.navMenu) {
+                    loadFragment(new MenuFragment());
+                } else if (itemId == R.id.navProfil) {
+                    loadFragment(new ProfilFragment());
+                } else {
 
+                    fragment = new AnasayfaFragment();
+                }
 
-             @Override
+                sharedPreferences = getSharedPreferences("MyPrefs", MainActivity.MODE_PRIVATE);
+                boolean isAppInitialized = sharedPreferences.getBoolean("isAppInitialized", false);
 
-             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                 Fragment fragment;
-                 int itemId = item.getItemId();
-
-                 loadFragment(new AnasayfaFragment(),true);
-
-                 if (itemId == R.id.navAnasayfa) {
-                     loadFragment(new AnasayfaFragment());
-
-                 } else if (itemId == R.id.navIstatistik) {
-                     loadFragment(new HedefFragment());
-                 } else if (itemId == R.id.navMenu) {
-                     loadFragment(new MenuFragment());
-                 } else if (itemId == R.id.navProfil) {
-                     loadFragment(new ProfilFragment());
-                 } else {
-
-                     fragment = new AnasayfaFragment();
-                 }
-
-
-
-
-
-                 sharedPreferences = getSharedPreferences("MyPrefs", MainActivity.MODE_PRIVATE);
-                 boolean isAppInitialized = sharedPreferences.getBoolean("isAppInitialized", false);
-
-                 if (!isAppInitialized) {
-                     //Uygulama ilk kez başlatılıyorsa, gerekli işlemleri yapın
-                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                     editor.putBoolean("isAppInitialized", true);
-                     editor.apply();
-                 }
-                 return true;
-             }
-         });
+                if (!isAppInitialized) {
+                    //Uygulama ilk kez başlatılıyorsa, gerekli işlemleri yapın
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("isAppInitialized", true);
+                    editor.apply();
+                }
+                return true;
+            }
+        });
 
 
     }
 }
-

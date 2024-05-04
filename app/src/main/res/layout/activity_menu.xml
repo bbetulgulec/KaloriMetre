@@ -10,6 +10,10 @@
     android:layout_height="match_parent"
     tools:context=".menu">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/floatingMenu"

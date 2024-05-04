@@ -1,7 +1,6 @@
 package com.betulgulec.app;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -16,12 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class ilkkullanici extends AppCompatActivity {
     private EditText editTextKilo, editTextBoy, editTextYas;
     private RadioGroup radioGroupCinsiyet;
-    private MaterialButton btndegistir;
-    private SharedPreferences sharedPreferences;
-
-    private MaterialButton btncikis;
     private FirebaseHelper firebaseHelper;
-    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +24,6 @@ public class ilkkullanici extends AppCompatActivity {
         initComponents();
         FirebaseAuth.getInstance();
         firebaseHelper = new FirebaseHelper();
-
-        // Önceki aktiviteden userId'yi al
-        userId = getIntent().getStringExtra("userId");
     }
 
     private void initComponents() {
@@ -40,16 +31,20 @@ public class ilkkullanici extends AppCompatActivity {
         editTextBoy = findViewById(R.id.editTextBoy);
         editTextYas = findViewById(R.id.editTextYas);
         radioGroupCinsiyet = findViewById(R.id.radioGroupCinsiyet);
-        btndegistir=findViewById(R.id.btndegistir);
+        MaterialButton btndegistir = findViewById(R.id.btndegistir);
+
+        btndegistir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                degistir();
+            }
+        });
     }
 
-    public void degistir(View view) {
+    public void degistir() {
         boolean isValid = true;
 
-        // Seçilen RadioButton'un ID'sini al
         int selectedRadioButtonId = radioGroupCinsiyet.getCheckedRadioButtonId();
-
-        // RadioButton ID'sine göre cinsiyeti belirle
         String gender = "";
         if (selectedRadioButtonId == R.id.radioButtonErkek) {
             gender = "Erkek";
@@ -85,12 +80,19 @@ public class ilkkullanici extends AppCompatActivity {
             int age = Integer.parseInt(yas);
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            // Parola bilgisini almak için FirebaseUser nesnesi üzerinden getCurrentUser metodu kullanılır.
-            String password = FirebaseAuth.getInstance().getCurrentUser().getProviderData().get(1).getProviderId();
+            // Günlük kalori ihtiyacını hesapla
+            int dailyCalorieNeed = firebaseHelper.calculateDailyCalorieNeed(gender, weight, height, age);
 
-            firebaseHelper.saveAdditionalUserInfo(userId, gender, weight, height, age);
-            startActivity(new Intent(ilkkullanici.this, anasayfa.class));
+            // Kullanıcı bilgilerini Firebase Realtime Database'e kaydet
+            firebaseHelper.saveAdditionalUserInfoRealtime(userId, gender, weight, height, age, dailyCalorieNeed);
+
+            // Hedef sayfasına veriyi gönder
+            Intent intent = new Intent(ilkkullanici.this, anasayfa.class);
+            intent.putExtra("dailyCalorieNeed", dailyCalorieNeed);
+            startActivity(intent);
             finish();
         }
     }
+
+
 }
