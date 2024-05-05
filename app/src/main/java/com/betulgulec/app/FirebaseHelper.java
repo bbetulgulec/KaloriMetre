@@ -100,26 +100,11 @@ public class FirebaseHelper {
         return calorieNeed;
     }
 
-    public void updateTodaysDate(String userId) {
-        // Günün tarihini al
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String todaysDate = dateFormat.format(calendar.getTime());
-
-        // Kullanıcının dailydata düğümündeki todaysDate alanının değerini güncelle
-        Map<String, Object> updateMap = new HashMap<>();
-        updateMap.put("todaysDate", todaysDate);
-        mDatabase.child("users").child(userId).child("dailydata").updateChildren(updateMap);
-    }
-
-
-
     // Toplam kalorileri kaydet
     public void saveTotalCalories(String userId, String date, int totalCalories) {
         // DatabaseReference kullanarak totalCalories değerini belirtilen yola (path) yerleştir
         mDatabase.child("users").child(userId).child("weeklycalories").child(date).setValue(totalCalories);
     }
-    // todaystotalcalories alt düğümüne kaloriyi ekleyen metod
     // todaystotalcalories ve foodname alt düğümlerine kaloriyi ve yiyecek adını ekleyen metod
     public void addCalorieAndFoodNameToToday(String userId, int calorie, String foodName) {
         // Günün tarihini al

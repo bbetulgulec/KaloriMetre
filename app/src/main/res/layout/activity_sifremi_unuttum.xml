@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:layout_width="105dp"
+        android:layout_height="84dp"
+        android:src="@drawable/lockreseticon" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Şifremi Unuttum"
+        android:textSize="30sp"
+        android:textStyle="bold|italic"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/mailLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/mail"
+            style="@style/btnMaterial"
+            android:hint="Mail :"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnsifresifirla"
+        style="@style/btn"
+        android:layout_width="300dp"
+        android:layout_height="59dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:text="Şifremi Sıfırla" />
+
+    <com.google.android.material.button.MaterialButton
+
+        android:id="@+id/btngeridon"
+        app:icon="@drawable/backicon"
+        style="@style/btn"
+        android:layout_width="286dp"
+        android:layout_height="58dp"
+        android:layout_gravity="center"
+        android:text="Geri Dön" />
+
+</LinearLayout>

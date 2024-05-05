@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,15 +18,16 @@ public class girisyap extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private EditText editTextMail, editTextPassword;
 
+    private Button btnsifreunuttum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_girisyap);
 
-
         editTextMail = findViewById(R.id.mail);
         editTextPassword = findViewById(R.id.password);
-
+        btnsifreunuttum=findViewById(R.id.btnsifreunuttum);
         sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
 
         // Eğer kullanıcı daha önce oturum açmışsa ve bu bilgi sharedPreferences'te varsa, direkt ana sayfaya yönlendir
@@ -33,6 +35,18 @@ public class girisyap extends AppCompatActivity {
             startActivity(new Intent(girisyap.this, anasayfa.class));
             finish();
         }
+
+
+        //şifremi unuttum butonuna basarsa
+
+        btnsifreunuttum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(girisyap.this, SifremiUnuttum.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     public void girisyapmetod(View view) {
@@ -61,15 +75,6 @@ public class girisyap extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putBoolean("isLoggedIn", true);
                         editor.apply();
-
-                        // Giriş yapan kullanıcının ID'sini al
-                        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                        // FirebaseHelper sınıfından bir nesne oluştur
-                        FirebaseHelper firebaseHelper = new FirebaseHelper();
-                        // Güncel tarihi Firebase veritabanına kaydet
-                        firebaseHelper.updateTodaysDate(userId);
-
-                        // Ana sayfaya yönlendir
                         startActivity(new Intent(girisyap.this, anasayfa.class));
                         finish();
                     } else {
@@ -85,6 +90,6 @@ public class girisyap extends AppCompatActivity {
     }
 
     public void sifreunuttum(View view) {
-        // Şifremi unuttum ekranına geçiş yap
+        // Şifremi unuttum ekranına geçiş yap
     }
 }

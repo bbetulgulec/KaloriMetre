@@ -41,7 +41,6 @@ public class AnasayfaFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
 
         // Firebase'den hedef kaloriyi al ve textViewHedef'e ayarla
-        // Firebase'den hedef kaloriyi al ve textViewHedef'e ayarla
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();

@@ -78,22 +78,19 @@
 
 
     <Button
+        android:id="@+id/btnsifreunuttum"
         style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:id="@+id/btnLogin"
-        android:textColor="#5DB075"
         android:layout_width="wrap_content"
         android:layout_height="37dp"
         android:layout_gravity="center"
         android:layout_marginHorizontal="50dp"
         android:layout_marginTop="30dp"
         android:gravity="bottom"
+        android:onClick="sifreunuttum"
         android:text="Şifreni mi unuttun ?"
         android:textAllCaps="false"
-        android:textStyle="italic"
-        android:onClick="sifreunuttum"/>
-
-
-
+        android:textColor="#5DB075"
+        android:textStyle="italic" />
 
 
 </LinearLayout>

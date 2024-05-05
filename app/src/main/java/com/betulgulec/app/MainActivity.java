@@ -10,9 +10,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -25,14 +22,6 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        // Firebase kullanıcısını kontrol et ve eğer mevcutsa todaysDate'i güncelle
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
-            FirebaseHelper firebaseHelper = new FirebaseHelper();
-            firebaseHelper.updateTodaysDate(userId);
-        }
     }
 
     public void ilkbutton(View view){
