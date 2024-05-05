@@ -44,15 +44,12 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
     }
 
     // Yeni bir FoodItem oluşturan yöntem
-    // Yeni bir FoodItem oluşturan yöntem
     private void createFoodItem(String foodName, String calorie) {
         FoodItem newFoodItem = new FoodItem(foodName, calorie);
         foodList.add(newFoodItem);
         ArrayAdapter<Object> foodAdapter = null;
         foodAdapter.notifyDataSetChanged();
     }
-
-
 
     public static class FoodViewHolder extends RecyclerView.ViewHolder {
         public TextView nameTextView;
@@ -64,7 +61,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             calorieTextView = itemView.findViewById(R.id.foodCalori);
         }
     }
-
     public void filterFoodList(ArrayList<FoodItem> filteredList) {
         foodList = filteredList;
         notifyDataSetChanged();

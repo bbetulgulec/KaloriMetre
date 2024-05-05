@@ -30,7 +30,6 @@ public class kayitol extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         firebaseHelper = new FirebaseHelper(); // FirebaseHelper örneği oluştur
-
         editTextad = findViewById(R.id.ad);
         editTextsoyad = findViewById(R.id.soyad);
         editTextmail = findViewById(R.id.mail);
@@ -70,77 +69,29 @@ public class kayitol extends AppCompatActivity {
         });
     }
 
-    private void registerUser(String textAd, String textSoyad, String textMail, String textTelefon, String textPassword) {
-        mAuth.createUserWithEmailAndPassword(textMail, textPassword) // (1) Yeni bir kullanıcı oluşturma işlemini başlatır.
-                .addOnCompleteListener(kayitol.this, new OnCompleteListener<AuthResult>() { // (2) Oluşturma işleminin sonucunu dinlemek için bir listener ekler.
+    public void registerUser(String textAd, String textSoyad, String textMail, String textTelefon, String textPassword) {
+        mAuth.createUserWithEmailAndPassword(textMail, textPassword)
+                .addOnCompleteListener(kayitol.this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) { // (3) Oluşturma işleminin tamamlanma durumunu işler.
-                        FirebaseUser firebaseUser = mAuth.getCurrentUser(); // (4) Mevcut Firebase kullanıcısını alır.
-                        if (firebaseUser != null) { // (5) Firebase kullanıcısı mevcutsa işlemi devam ettirir.
-                            firebaseUser.sendEmailVerification() // (6) Kullanıcıya e-posta doğrulama gönderme işlemini başlatır.
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() { // (7) E-posta doğrulama işleminin sonucunu dinler.
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> emailTask) { // (8) E-posta doğrulama işleminin tamamlanma durumunu işler.
-                                            if (emailTask.isSuccessful()) { // (9) E-posta doğrulama işlemi başarılıysa
-                                                Toast.makeText(kayitol.this, "E-posta doğrulama gönderildi. Lütfen e-posta adresinizi kontrol edin ve doğrulayın.", Toast.LENGTH_LONG).show(); // (10) Başarılı gönderim durumunda kullanıcıya bir mesaj gösterir.
-                                            } else {
-                                                Toast.makeText(kayitol.this, "E-posta doğrulama gönderilemedi! Hata: " + emailTask.getException().getMessage(), Toast.LENGTH_LONG).show(); // (11) Gönderim başarısızsa bir hata mesajı gösterir.
-                                            }
-                                        }
-                                    });
-
-                            if (task.isSuccessful()) { // (12) Kullanıcı oluşturma işlemi başarılıysa
-                                mAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() { // (13) Mevcut kullanıcının bilgilerini güncellemek için bir işlem başlatır.
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> reloadTask) { // (14) Yeniden yükleme işleminin tamamlanma durumunu işler.
-                                        if (reloadTask.isSuccessful()) { // (15) Yeniden yükleme işlemi başarılıysa
-                                            FirebaseUser firebaseUser = mAuth.getCurrentUser(); // (16) Mevcut Firebase kullanıcısını alır.
-                                            if (firebaseUser != null && firebaseUser.isEmailVerified()) { // (17) Firebase kullanıcısı mevcut ve e-postası doğrulanmışsa
-                                                String userId = firebaseUser.getUid(); // (18) Kullanıcı kimliğini alır.
-                                                firebaseHelper.saveUserBasicInformation(userId, textAd, textSoyad, textMail, textTelefon, textPassword); // (19) Kullanıcı bilgilerini Firebase Realtime Database'e kaydeder.
-                                                Intent intent = new Intent(kayitol.this, ilkkullanici.class); // (20) Yeni bir intent oluşturur.
-                                                intent.putExtra("userId", userId); // (21) Kullanıcı kimliğini intent'e ekler.
-                                                startActivity(intent); // (22) Yeni aktiviteyi başlatır.
-                                                finish(); // (23) Kayıt aktivitesini sonlandırır.
-                                            } else {
-                                                Toast.makeText(kayitol.this, "E-posta adresinizi doğrulayın.", Toast.LENGTH_LONG).show(); // (24) E-posta doğrulaması başarısızsa bir hata mesajı gösterir.
-                                            }
-                                        }
-                                    }
-                                });
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                            if (firebaseUser != null) {
+                                String userId = firebaseUser.getUid();
+                                firebaseHelper.saveUserBasicInformation(userId, textAd, textSoyad, textMail, textTelefon, textPassword);
+                                Intent intent = new Intent(kayitol.this, ilkkullanici.class);
+                                intent.putExtra("userId", userId);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Toast.makeText(kayitol.this, "Kullanıcı kaydedilemedi! FirebaseUser null.", Toast.LENGTH_LONG).show();
                             }
                         } else {
-                            Toast.makeText(kayitol.this, "Kullanıcı kaydedilemedi! Hata: " + task.getException().getMessage(), Toast.LENGTH_LONG).show(); // (25) Firebase kullanıcısı alınamazsa bir hata mesajı gösterir.
+                            Toast.makeText(kayitol.this, "Kullanıcı kaydedilemedi! Hata: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
     }
-
-    private void saveUserInformationAndNavigateToNextPage(String textAd, String textSoyad, String textMail, String textTelefon, String textPassword) {
-        mAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> reloadTask) {
-                if (reloadTask.isSuccessful()) {
-                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                    if (firebaseUser != null && firebaseUser.isEmailVerified()) {
-                        String userId = firebaseUser.getUid();
-                        firebaseHelper.saveUserBasicInformation(userId, textAd, textSoyad, textMail, textTelefon, textPassword);
-                        Intent intent = new Intent(kayitol.this, ilkkullanici.class);
-                        intent.putExtra("userId", userId);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(kayitol.this, "E-posta adresinizi doğrulayın.", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-        });
-    }
-
-
-
-
-
 
     // E-posta adresinin geçerli olup olmadığını kontrol et
     private boolean isValidEmail(String email) {

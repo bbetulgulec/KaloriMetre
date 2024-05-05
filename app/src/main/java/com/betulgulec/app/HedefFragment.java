@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,8 +28,8 @@ public class HedefFragment extends Fragment {
 
     private DatabaseReference mDatabase;
     private FirebaseUser mCurrentUser;
-
     private TextView[] dayLabels;
+    private ProgressBar[] progressBars;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,7 +39,7 @@ public class HedefFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        // Gün etiketlerini tanımla
+        // Gün etiketlerini ve progress barları tanımla
         dayLabels = new TextView[]{
                 view.findViewById(R.id.monday_label),
                 view.findViewById(R.id.tuesday_label),
@@ -48,9 +49,21 @@ public class HedefFragment extends Fragment {
                 view.findViewById(R.id.saturday_label),
                 view.findViewById(R.id.sunday_label)
         };
+        progressBars = new ProgressBar[]{
+                view.findViewById(R.id.progressBar1),
+                view.findViewById(R.id.progressBar2),
+                view.findViewById(R.id.progressBar3),
+                view.findViewById(R.id.progressBar4),
+                view.findViewById(R.id.progressBar5),
+                view.findViewById(R.id.progressBar6),
+                view.findViewById(R.id.progressBar7)
+        };
 
         // Gün etiketlerini güncelle
         updateDayLabels();
+
+        // ProgressBar'ların değerlerini güncelle
+        updateProgressBars();
 
         return view;
     }
@@ -87,6 +100,40 @@ public class HedefFragment extends Fragment {
                             }
                         }
                     }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Veritabanı hatası
+                    }
+                });
+    }
+
+    // ProgressBar'ların değerlerini güncelleyen metod
+    private void updateProgressBars() {
+        // Haftanın tarihlerini al
+        List<String> datesOfWeek = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        for (int i = 0; i < 7; i++) {
+            datesOfWeek.add(dateFormat.format(calendar.getTime()));
+            calendar.add(Calendar.DAY_OF_YEAR, 1); // Bir sonraki güne geç
+        }
+
+        // Veritabanından haftanın tarihlerini ve kalori değerlerini çek
+        mDatabase.child("users").child(mCurrentUser.getUid()).child("weeklycalories")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int maxCalories = 0;
+                        for (int i = 0; i < progressBars.length; i++) {
+                            if (dataSnapshot.child(datesOfWeek.get(i)).exists()) {
+                                int calories = dataSnapshot.child(datesOfWeek.get(i)).getValue(Integer.class);
+                                progressBars[i].setProgress(calories);
+                                maxCalories = Math.max(maxCalories, calories);
+                            }
+                        }
+                        // En büyük kalori değerini progressBar7'ye ata
+                        progressBars[6].setMax(maxCalories);
+                    }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -95,3 +142,4 @@ public class HedefFragment extends Fragment {
                 });
     }
 }
+

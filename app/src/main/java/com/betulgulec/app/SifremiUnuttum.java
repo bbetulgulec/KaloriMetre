@@ -3,10 +3,8 @@ package com.betulgulec.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -15,9 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.betulgulec.app.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
@@ -29,7 +25,6 @@ public class SifremiUnuttum extends AppCompatActivity {
     private MaterialButton btngeridon;
     private TextInputEditText mail;
     private Button btnsifresifirla;
-
     FirebaseAuth mAuth;
     private String strEmail;
 
@@ -64,7 +59,6 @@ public class SifremiUnuttum extends AppCompatActivity {
             }
         });
 
-
         btngeridon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +67,6 @@ public class SifremiUnuttum extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
     public void resetPassword(){
@@ -86,15 +79,12 @@ public class SifremiUnuttum extends AppCompatActivity {
                 Intent intent =new Intent(SifremiUnuttum.this, girisyap.class);
                 startActivity(intent);
                 finish();
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
                 Toast.makeText(SifremiUnuttum.this, "Hata "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 btnsifresifirla.setVisibility(View.INVISIBLE);
-
             }
         });
     }

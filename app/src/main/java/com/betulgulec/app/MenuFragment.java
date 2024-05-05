@@ -118,7 +118,6 @@ public class MenuFragment extends Fragment {
         return view;
     }
 
-
     private void loadFoodItems() {
         rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
