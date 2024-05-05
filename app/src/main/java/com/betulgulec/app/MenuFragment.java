@@ -19,18 +19,24 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class MenuFragment extends Fragment {
 
     private DatabaseReference rootRef;
+    private DatabaseReference weeklyCaloriesRef;
     private RecyclerView recyclerView;
     private ArrayList<FoodItem> foodList;
     private FoodAdapter foodAdapter;
@@ -39,12 +45,12 @@ public class MenuFragment extends Fragment {
     private Button btnekle;
     private CardView cardView;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         rootRef = database.getReference(); // rootRef'i food düğümüne değil, root düğümüne eşitle
+        weeklyCaloriesRef = database.getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("weeklycalories");
     }
 
     @Override
@@ -52,39 +58,7 @@ public class MenuFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
 
-        // Burada Firebase Realtime Database'e veri ekleyebilirsiniz
-        DatabaseReference foodRef = rootRef.child("food");
-
-        // Tatlılar alt düğümü
-        DatabaseReference tatliRef = foodRef.child("tatli");
-        HashMap<String, String> tatliData = new HashMap<>();
-        tatliData.put("browni", "300");
-        tatliData.put("cheesecake", "400");
-        tatliData.put("profiterol", "350");
-        tatliData.put("muhallebi", "200");
-        tatliData.put("kazandibi", "250");
-        tatliRef.setValue(tatliData);
-
-        // Yiyecekler alt düğümü
-        DatabaseReference yiyecekRef = foodRef.child("yiyecek");
-        HashMap<String, String> yiyecekData = new HashMap<>();
-        yiyecekData.put("pizza", "500");
-        yiyecekData.put("hamburger", "600");
-        yiyecekData.put("salata", "200");
-        yiyecekData.put("makarna", "400");
-        yiyecekData.put("sushi", "350");
-        yiyecekRef.setValue(yiyecekData);
-
-        // İçecekler alt düğümü
-        DatabaseReference icecekRef = foodRef.child("icecek");
-        HashMap<String, String> icecekData = new HashMap<>();
-        icecekData.put("kola", "150");
-        icecekData.put("limonata", "100");
-        icecekData.put("çay", "50");
-        icecekData.put("kahve", "80");
-        icecekData.put("portakal suyu", "120");
-        icecekRef.setValue(icecekData);
-
+        // RecyclerView başlatma ve ayarları
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -96,9 +70,10 @@ public class MenuFragment extends Fragment {
         // TextView'leri initialize etme
         foodName = view.findViewById(R.id.foodName);
         foodCalori = view.findViewById(R.id.foodCalori);
+        btnekle = view.findViewById(R.id.btnekle);
+        cardView = view.findViewById(R.id.cardView);
 
         loadFoodItems();
-        initComponent();
 
         // Arama butonuna onClick özelliğini ekleme
         Button btnAra = view.findViewById(R.id.btnAra);
@@ -109,29 +84,40 @@ public class MenuFragment extends Fragment {
             }
         });
 
+        // Ekle butonuna onClick özelliğini ekleme
+        btnekle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Kullanıcı oturum açtıysa, kullanıcı kimliğini al
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                if (currentUser != null) {
+                    String userId = currentUser.getUid();
+                    // Seçilen kaloriyi al
+                    String calorieString = foodCalori.getText().toString();
+                    int calorie = Integer.parseInt(calorieString);
+
+                    // Kullanıcının girdiği yiyecek adını al
+                    String foodNameText = foodName.getText().toString();
+
+                    // FirebaseHelper sınıfından yeni bir nesne oluştur
+                    FirebaseHelper firebaseHelper = new FirebaseHelper();
+                    // Kaloriyi ve yiyecek adını todaystotalcalories ve foodname alt düğümlerine ekle
+                    firebaseHelper.addCalorieAndFoodNameToToday(userId, calorie, foodNameText);
+                    // Total kaloriyi güncelle
+                    updateWeeklyCalories(calorie);
+                } else {
+                    // Kullanıcı oturum açmamışsa, uygun bir işlem yapabilirsiniz.
+                    // Örneğin, kullanıcıyı oturum açma sayfasına yönlendirebilirsiniz.
+                }
+            }
+        });
+
+        // EditText'i başlat
+        searchEditText = view.findViewById(R.id.searchEditText);
+
         return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        // EditText'i başlat
-        initComponent();
-    }
-
-    // EditText'i başlatan yöntem
-    public void initComponent() {
-        View rootView = getView();
-        if (rootView != null) {
-            searchEditText = rootView.findViewById(R.id.searchEditText);
-            foodName = rootView.findViewById(R.id.foodName);
-            foodCalori = rootView.findViewById(R.id.foodCalori);
-            btnekle = rootView.findViewById(R.id.btnekle);
-            cardView = rootView.findViewById(R.id.cardView);
-        } else {
-            Log.e("MenuFragment", "Root view is null");
-        }
-    }
 
     private void loadFoodItems() {
         rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -165,8 +151,6 @@ public class MenuFragment extends Fragment {
             }
         });
     }
-
-
 
     public void searchFood() {
         // Arama kutusundaki metni al
@@ -212,6 +196,32 @@ public class MenuFragment extends Fragment {
         } else {
             // Arama kutusu boş
             Toast.makeText(getContext(), "Lütfen aramak için bir yemek adı girin.", Toast.LENGTH_SHORT).show();
-     }
-}
+        }
+    }
+
+    // Total kalorileri güncelle
+    private void updateWeeklyCalories(int calorie) {
+        // Günün tarihini al
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String todaysDate = dateFormat.format(calendar.getTime());
+
+        weeklyCaloriesRef.child(todaysDate).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Integer totalCalories = dataSnapshot.getValue(Integer.class);
+                if (totalCalories == null) {
+                    totalCalories = calorie;
+                } else {
+                    totalCalories += calorie;
+                }
+                weeklyCaloriesRef.child(todaysDate).setValue(totalCalories);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Firebase Database", "Veritabanı hatası: " + databaseError.getMessage());
+            }
+        });
+    }
 }

@@ -22,6 +22,7 @@ public class girisyap extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_girisyap);
 
+
         editTextMail = findViewById(R.id.mail);
         editTextPassword = findViewById(R.id.password);
 
@@ -60,6 +61,15 @@ public class girisyap extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putBoolean("isLoggedIn", true);
                         editor.apply();
+
+                        // Giriş yapan kullanıcının ID'sini al
+                        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        // FirebaseHelper sınıfından bir nesne oluştur
+                        FirebaseHelper firebaseHelper = new FirebaseHelper();
+                        // Güncel tarihi Firebase veritabanına kaydet
+                        firebaseHelper.updateTodaysDate(userId);
+
+                        // Ana sayfaya yönlendir
                         startActivity(new Intent(girisyap.this, anasayfa.class));
                         finish();
                     } else {
@@ -76,5 +86,5 @@ public class girisyap extends AppCompatActivity {
 
     public void sifreunuttum(View view) {
         // Şifremi unuttum ekranına geçiş yap
-}
+    }
 }

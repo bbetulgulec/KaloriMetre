@@ -41,6 +41,7 @@ public class AnasayfaFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
 
         // Firebase'den hedef kaloriyi al ve textViewHedef'e ayarla
+        // Firebase'den hedef kaloriyi al ve textViewHedef'e ayarla
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
@@ -58,10 +59,11 @@ public class AnasayfaFragment extends Fragment {
                             progressBar.setMax(targetCalories);
 
                             // todaystotalcalories değerini dinlemek için referans oluştur
-                            todaysCaloriesRef = userRef.child("dailydata").child(getTodayDate()).child("todaysfood").child("todaystotalcalories");
+                            DatabaseReference dailyDataRef = userRef.child("dailydata").child(getTodayDate());
+                            DatabaseReference todaysTotalCaloriesRef = dailyDataRef.child("todaystotalcalories");
 
                             // todaystotalcalories değerini dinlemeye başla
-                            todaysCaloriesListener = new ValueEventListener() {
+                            todaysTotalCaloriesRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if (snapshot.exists()) {
@@ -87,9 +89,7 @@ public class AnasayfaFragment extends Fragment {
                                 public void onCancelled(@NonNull DatabaseError error) {
                                     // Veritabanı erişiminde hata oluştuğunda yapılacak işlemler
                                 }
-                            };
-
-                            todaysCaloriesRef.addValueEventListener(todaysCaloriesListener);
+                            });
                         }
                     }
                 }
@@ -100,6 +100,7 @@ public class AnasayfaFragment extends Fragment {
                 }
             });
         }
+
 
         return view;
     }
