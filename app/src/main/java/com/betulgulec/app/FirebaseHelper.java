@@ -105,6 +105,7 @@ public class FirebaseHelper {
         // DatabaseReference kullanarak totalCalories değerini belirtilen yola (path) yerleştir
         mDatabase.child("users").child(userId).child("weeklycalories").child(date).setValue(totalCalories);
     }
+
     // todaystotalcalories ve foodname alt düğümlerine kaloriyi ve yiyecek adını ekleyen metod
     public void addCalorieAndFoodNameToToday(String userId, int calorie, String foodName) {
         // Günün tarihini al
@@ -113,22 +114,21 @@ public class FirebaseHelper {
         String todaysDate = dateFormat.format(calendar.getTime());
 
         // todaystotalcalories düğümüne kaloriyi ekle
-        DatabaseReference todaysTotalCaloriesRef = mDatabase.child("users").child(userId)
-                .child("dailydata").child(todaysDate).child("todaystotalcalories");
-        todaysTotalCaloriesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference dailyDataRef = mDatabase.child("users").child(userId)
+                .child("dailydata").child(todaysDate);
+
+        // Mevcut total kaloriyi al
+        dailyDataRef.child("todaystotalcalories").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Mevcut toplam kaloriyi al
                 Integer currentCalories = dataSnapshot.getValue(Integer.class);
-
                 if (currentCalories == null) {
-                    // Mevcut kalori değeri null ise, sıfır olarak başlat
                     currentCalories = 0;
                 }
 
                 // Yeni toplam kaloriyi hesapla ve düğüme ekle
                 int newCalories = currentCalories + calorie;
-                todaysTotalCaloriesRef.setValue(newCalories);
+                dailyDataRef.child("todaystotalcalories").setValue(newCalories);
             }
 
             @Override
@@ -137,10 +137,17 @@ public class FirebaseHelper {
             }
         });
 
-        // foodname düğümüne yiyecek adını ekle
-        DatabaseReference foodNameRef = mDatabase.child("users").child(userId)
-                .child("dailydata").child(todaysDate).child("todaysfood").child("foodname");
-        foodNameRef.setValue(foodName);
+        // foodname ve calorie alt düğümlerine yiyecek adını ve kaloriyi ekle
+        DatabaseReference todaysFoodRef = dailyDataRef.child("todaysfood");
+        DatabaseReference foodNameRef = todaysFoodRef.child("foodname");
+        DatabaseReference calorieRef = todaysFoodRef.child("calories");
+
+        // Yeni bir yemek için bir key oluştur
+        String newFoodKey = foodNameRef.push().getKey();
+
+        // Yeni yemeğin adını ve kalorisini ekleyin
+        foodNameRef.child(newFoodKey).setValue(foodName);
+        calorieRef.child(newFoodKey).setValue(calorie);
     }
 
 

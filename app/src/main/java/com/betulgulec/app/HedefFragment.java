@@ -118,28 +118,19 @@ public class HedefFragment extends Fragment {
             calendar.add(Calendar.DAY_OF_YEAR, 1); // Bir sonraki güne geç
         }
 
-        // Veritabanından haftanın tarihlerini ve kalori değerlerini çek
-        mDatabase.child("users").child(mCurrentUser.getUid()).child("weeklycalories")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        int maxCalories = 0;
-                        for (int i = 0; i < progressBars.length; i++) {
-                            if (dataSnapshot.child(datesOfWeek.get(i)).exists()) {
-                                int calories = dataSnapshot.child(datesOfWeek.get(i)).getValue(Integer.class);
-                                progressBars[i].setProgress(calories);
-                                maxCalories = Math.max(maxCalories, calories);
-                            }
-                        }
-                        // En büyük kalori değerini progressBar7'ye ata
-                        progressBars[6].setMax(maxCalories);
-                    }
+        // Başlangıç değeri ve maksimum değeri ayarla
+        int startValue = 3000; // Başlangıç değeri
+        int maxValue = startValue; // Maksimum değer
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        // Veritabanı hatası
-                    }
-                });
+        // Weeklycalories altındaki tarihlerin değerlerini ayarla
+        for (int i = 0; i < progressBars.length; i++) {
+            progressBars[i].setProgress(startValue);
+            progressBars[i].setMax(startValue);
+        }
+
+        // progressBar7'nin maksimum değerini güncelle
+        progressBars[6].setMax(maxValue);
     }
+
 }
 
