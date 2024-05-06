@@ -69,6 +69,7 @@ public class kayitol extends AppCompatActivity {
         });
     }
 
+
     public void registerUser(String textAd, String textSoyad, String textMail, String textTelefon, String textPassword) {
         mAuth.createUserWithEmailAndPassword(textMail, textPassword)
                 .addOnCompleteListener(kayitol.this, new OnCompleteListener<AuthResult>() {

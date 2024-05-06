@@ -36,7 +36,6 @@ public class girisyap extends AppCompatActivity {
             finish();
         }
 
-
         //şifremi unuttum butonuna basarsa
 
         btnsifreunuttum.setOnClickListener(new View.OnClickListener() {

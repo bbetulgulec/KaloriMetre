@@ -84,7 +84,7 @@
             android:id="@+id/password"
             style="@style/btnMaterial"
             android:hint="Şifre"
-            android:inputType="numberPassword" />
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
 

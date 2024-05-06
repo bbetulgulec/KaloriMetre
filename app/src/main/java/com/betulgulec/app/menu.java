@@ -26,6 +26,7 @@ public class menu extends AppCompatActivity {
         });
     }
     private void initComponents() {
+
         recyclerView = findViewById(R.id.recyclerView);
         database = FirebaseDatabase.getInstance();
     }

@@ -217,6 +217,8 @@ public class MenuFragment extends Fragment {
                 weeklyCaloriesRef.child(todaysDate).setValue(totalCalories);
             }
 
+
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("Firebase Database", "Veritabanı hatası: " + databaseError.getMessage());

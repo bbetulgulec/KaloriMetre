@@ -41,6 +41,7 @@ public class ilkkullanici extends AppCompatActivity {
         });
     }
 
+
     public void degistir() {
         boolean isValid = true;
 

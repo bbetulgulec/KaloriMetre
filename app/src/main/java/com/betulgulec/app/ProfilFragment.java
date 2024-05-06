@@ -39,6 +39,7 @@ public class ProfilFragment extends Fragment {
         firebaseHelper = new FirebaseHelper();
     }
 
+
     private void setupButtons(View view) {
         MaterialButton btndegistir = view.findViewById(R.id.btndegistir);
         btndegistir.setOnClickListener(new View.OnClickListener() {

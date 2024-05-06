@@ -3,7 +3,6 @@ package com.betulgulec.app;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,13 +42,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         return foodList.size();
     }
 
-    // Yeni bir FoodItem oluşturan yöntem
-    private void createFoodItem(String foodName, String calorie) {
-        FoodItem newFoodItem = new FoodItem(foodName, calorie);
-        foodList.add(newFoodItem);
-        ArrayAdapter<Object> foodAdapter = null;
-        foodAdapter.notifyDataSetChanged();
-    }
 
     public static class FoodViewHolder extends RecyclerView.ViewHolder {
         public TextView nameTextView;
@@ -61,8 +53,4 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             calorieTextView = itemView.findViewById(R.id.foodCalori);
         }
     }
-    public void filterFoodList(ArrayList<FoodItem> filteredList) {
-        foodList = filteredList;
-        notifyDataSetChanged();
-}
 }

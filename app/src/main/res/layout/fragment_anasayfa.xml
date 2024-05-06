@@ -29,9 +29,6 @@
         android:visibility="gone"
         tools:ignore="MissingConstraints" />
 
-
-
-
     <!-- PROGRESS BAR  -->
     <ProgressBar
         android:id="@+id/progressBar"

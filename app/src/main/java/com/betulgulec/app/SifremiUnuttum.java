@@ -28,7 +28,6 @@ public class SifremiUnuttum extends AppCompatActivity {
     FirebaseAuth mAuth;
     private String strEmail;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

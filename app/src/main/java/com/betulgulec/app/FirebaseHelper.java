@@ -100,12 +100,6 @@ public class FirebaseHelper {
         return calorieNeed;
     }
 
-    // Toplam kalorileri kaydet
-    public void saveTotalCalories(String userId, String date, int totalCalories) {
-        // DatabaseReference kullanarak totalCalories değerini belirtilen yola (path) yerleştir
-        mDatabase.child("users").child(userId).child("weeklycalories").child(date).setValue(totalCalories);
-    }
-
     // todaystotalcalories ve foodname alt düğümlerine kaloriyi ve yiyecek adını ekleyen metod
     public void addCalorieAndFoodNameToToday(String userId, int calorie, String foodName) {
         // Günün tarihini al
@@ -149,6 +143,4 @@ public class FirebaseHelper {
         foodNameRef.child(newFoodKey).setValue(foodName);
         calorieRef.child(newFoodKey).setValue(calorie);
     }
-
-
 }

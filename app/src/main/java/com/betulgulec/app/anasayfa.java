@@ -76,6 +76,7 @@ public class anasayfa extends AppCompatActivity {
 
         battomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
 
+
             @Override
 
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

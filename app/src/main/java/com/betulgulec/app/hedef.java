@@ -47,6 +47,7 @@ public class hedef extends AppCompatActivity {
     }
 
 
+
     public void yemeklistesi(){
         Intent intent=new Intent(this, menu.class);
         startActivity(intent);

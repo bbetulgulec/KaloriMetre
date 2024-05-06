@@ -19,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -26,18 +27,18 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class AnasayfaFragment extends Fragment {
-
     private TextView textViewHedef;
+    private TextView textViewAlinanCalori;
     private ProgressBar progressBar;
     private int targetCalories;
-    private DatabaseReference todaysCaloriesRef;
-    private ValueEventListener todaysCaloriesListener;
+    private DatabaseReference todaysTotalCaloriesRef;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_anasayfa, container, false);
         textViewHedef = view.findViewById(R.id.textViewHedef);
+        textViewAlinanCalori = view.findViewById(R.id.textViewalınanCalori);
         progressBar = view.findViewById(R.id.progressBar);
 
         // Firebase'den hedef kaloriyi al ve textViewHedef'e ayarla
@@ -59,7 +60,7 @@ public class AnasayfaFragment extends Fragment {
 
                             // todaystotalcalories değerini dinlemek için referans oluştur
                             DatabaseReference dailyDataRef = userRef.child("dailydata").child(getTodayDate());
-                            DatabaseReference todaysTotalCaloriesRef = dailyDataRef.child("todaystotalcalories");
+                            todaysTotalCaloriesRef = dailyDataRef.child("todaystotalcalories");
 
                             // todaystotalcalories değerini dinlemeye başla
                             todaysTotalCaloriesRef.addValueEventListener(new ValueEventListener() {
@@ -69,6 +70,7 @@ public class AnasayfaFragment extends Fragment {
                                         int todaysTotalCalories = snapshot.getValue(Integer.class);
                                         // Progres barının ilerlemesini todaystotalcalories değerine ayarla
                                         progressBar.setProgress(todaysTotalCalories);
+                                        textViewAlinanCalori.setText(String.valueOf(todaysTotalCalories));
 
                                         // İlerleme yüzdesine göre renk değiştirme
                                         double progressPercentage = (double) todaysTotalCalories / targetCalories * 100;
@@ -100,7 +102,6 @@ public class AnasayfaFragment extends Fragment {
             });
         }
 
-
         return view;
     }
 
@@ -114,6 +115,8 @@ public class AnasayfaFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         // todaystotalcalories değerini dinlemeyi durdur
+        Query todaysCaloriesRef = null;
+        ValueEventListener todaysCaloriesListener = null;
         if (todaysCaloriesRef != null && todaysCaloriesListener != null) {
             todaysCaloriesRef.removeEventListener(todaysCaloriesListener);
         }
