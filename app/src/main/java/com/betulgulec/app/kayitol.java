@@ -84,10 +84,12 @@ public class kayitol extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
                             } else {
-                                Toast.makeText(kayitol.this, "Kullanıcı kaydedilemedi! FirebaseUser null.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(kayitol.this, "Kullanıcı kaydedilemedi!" +
+                                        " FirebaseUser null.", Toast.LENGTH_LONG).show();
                             }
                         } else {
-                            Toast.makeText(kayitol.this, "Kullanıcı kaydedilemedi! Hata: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(kayitol.this, "Kullanıcı kaydedilemedi! " +
+                                    "Hata: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });

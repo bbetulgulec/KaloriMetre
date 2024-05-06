@@ -1,6 +1,7 @@
 package com.betulgulec.app;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,28 +110,37 @@ public class HedefFragment extends Fragment {
 
     // ProgressBar'ların değerlerini güncelleyen metod
     private void updateProgressBars() {
-        // Haftanın tarihlerini al
-        List<String> datesOfWeek = new ArrayList<>();
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        for (int i = 0; i < 7; i++) {
-            datesOfWeek.add(dateFormat.format(calendar.getTime()));
-            calendar.add(Calendar.DAY_OF_YEAR, 1); // Bir sonraki güne geç
-        }
+        // Firebase'den haftanın tarihlerini al ve en büyük değeri bul
+        DatabaseReference weeklyCaloriesRef = mDatabase.child("users").child(mCurrentUser.getUid()).child("weeklycalories");
+        weeklyCaloriesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int maxValue = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    int value = snapshot.getValue(Integer.class);
+                    if (value > maxValue) {
+                        maxValue = value;
+                    }
+                }
 
-        // Başlangıç değeri ve maksimum değeri ayarla
-        int startValue = 3000; // Başlangıç değeri
-        int maxValue = startValue; // Maksimum değer
+                // Başlangıç değeri ayarla
+                int startValue = 100; // Başlangıç değeri
 
-        // Weeklycalories altındaki tarihlerin değerlerini ayarla
-        for (int i = 0; i < progressBars.length; i++) {
-            progressBars[i].setProgress(startValue);
-            progressBars[i].setMax(startValue);
-        }
+                // ProgressBar değerlerini ayarla
+                for (ProgressBar progressBar : progressBars) {
+                    progressBar.setProgress(startValue);
+                    progressBar.setMax(maxValue);
+                }
 
-        // progressBar7'nin maksimum değerini güncelle
-        progressBars[6].setMax(maxValue);
+                // progressBar7'nin maksimum değerini güncelle
+                progressBars[6].setMax(maxValue);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Veritabanı hatası
+                Log.e("Firebase Database", "Veritabanı hatası: " + databaseError.getMessage());
+            }
+        });
     }
-
 }
-

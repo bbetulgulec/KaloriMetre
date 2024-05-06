@@ -89,7 +89,5 @@ public class girisyap extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void sifreunuttum(View view) {
-        // Şifremi unuttum ekranına geçiş yap
-    }
+
 }

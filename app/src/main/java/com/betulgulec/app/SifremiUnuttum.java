@@ -75,7 +75,8 @@ public class SifremiUnuttum extends AppCompatActivity {
         mAuth.sendPasswordResetEmail(strEmail).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(SifremiUnuttum.this, "Şifre yenileme işlemi Email'e tanımlandı  ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SifremiUnuttum.this, "Şifre yenileme " +
+                        "işlemi Email'e tanımlandı  ", Toast.LENGTH_SHORT).show();
                 Intent intent =new Intent(SifremiUnuttum.this, girisyap.class);
                 startActivity(intent);
                 finish();
@@ -83,7 +84,8 @@ public class SifremiUnuttum extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(SifremiUnuttum.this, "Hata "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SifremiUnuttum.this, "Hata" +
+                        " "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 btnsifresifirla.setVisibility(View.INVISIBLE);
             }
         });
