@@ -42,7 +42,7 @@ public class anasayfa extends AppCompatActivity {
             return insets;
         });
 
-        initCompinant();
+        initCompenents();
         loadFragment(new AnasayfaFragment(), true);
         navigationcontrol();
 
@@ -66,7 +66,7 @@ public class anasayfa extends AppCompatActivity {
         loadFragment(fragment, false); // Varsayılan olarak isAppInitialized değerini false olarak ayarla
     }
 
-    public void initCompinant() {
+    public void initCompenents() {
 
         battomNavigationView = findViewById(R.id.bottomNavView);
         framelayout = findViewById(R.id.frameLayout);

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class SplashScreenActivity extends AppCompatActivity {
 
     // Splash ekranın görüntüleneceği süre (milisaniye cinsinden)
-    private static final int SPLASH_DISPLAY_LENGTH = 3000; // 3 saniye
+    private static final int SPLASH_DISPLAY_LENGTH = 2000; // 2 saniye
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

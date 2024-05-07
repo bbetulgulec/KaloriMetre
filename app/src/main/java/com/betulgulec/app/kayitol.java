@@ -1,6 +1,7 @@
 package com.betulgulec.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,6 +23,7 @@ public class kayitol extends AppCompatActivity {
     private EditText editTextad, editTextsoyad, editTextmail, editTexttelefon, editTextpassword;
     private FirebaseAuth mAuth;
     private FirebaseHelper firebaseHelper;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,9 @@ public class kayitol extends AppCompatActivity {
         editTextmail = findViewById(R.id.mail);
         editTexttelefon = findViewById(R.id.telefon);
         editTextpassword = findViewById(R.id.password);
+
+        // SharedPreferences örneğini oluştur
+        sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
 
         Button kayitbutonu = findViewById(R.id.btnkayitOl);
         kayitbutonu.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +74,7 @@ public class kayitol extends AppCompatActivity {
         });
     }
 
-
+    // Kullanıcıyı kaydetme işlemi
     public void registerUser(String textAd, String textSoyad, String textMail, String textTelefon, String textPassword) {
         mAuth.createUserWithEmailAndPassword(textMail, textPassword)
                 .addOnCompleteListener(kayitol.this, new OnCompleteListener<AuthResult>() {
@@ -79,7 +84,15 @@ public class kayitol extends AppCompatActivity {
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
                             if (firebaseUser != null) {
                                 String userId = firebaseUser.getUid();
+                                // FirebaseHelper kullanarak kullanıcı bilgilerini kaydet
                                 firebaseHelper.saveUserBasicInformation(userId, textAd, textSoyad, textMail, textTelefon, textPassword);
+
+                                // SharedPreferences'e kaydet
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putBoolean("isLoggedIn", true);
+                                editor.apply();
+
+                                // İlk kullanıcı ekranına yönlendir
                                 Intent intent = new Intent(kayitol.this, ilkkullanici.class);
                                 intent.putExtra("userId", userId);
                                 startActivity(intent);
@@ -105,5 +118,5 @@ public class kayitol extends AppCompatActivity {
     public void kayitol(View view) {
         Intent intent = new Intent(this, girisyap.class);
         startActivity(intent);
-}
+    }
 }

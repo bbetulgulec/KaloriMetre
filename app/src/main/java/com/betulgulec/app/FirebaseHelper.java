@@ -32,7 +32,7 @@ public class FirebaseHelper {
         mDatabase.child("users").child(userId).setValue(user);
     }
 
-    // Kullanıcının ek bilgilerini kaydet
+    // İlk kullanıcının ek bilgilerini kaydet
     public void saveAdditionalUserInfoRealtime(String userId, String gender, float weight, float height, int age, int targetCalories) {
         // Kullanıcı bilgilerini User nesnesine yerleştir
         Map<String, Object> additionalInfo = new HashMap<>();
@@ -91,11 +91,11 @@ public class FirebaseHelper {
     public int calculateDailyCalorieNeed(String gender, float weight, float height, int age) {
         int calorieNeed = 0;
 
-        // Kalori hesaplama formülü
+        // Bazal Metabolizma Kullanılarak hesaplama yapıldı.
         if (gender.equals("Erkek")) {
-            calorieNeed = (int) (88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age));
+            calorieNeed = (int) (1.3*(66.5+ (13.75 * weight) + (5 * height) - (6.77 * age)));
         } else if (gender.equals("Kadın")) {
-            calorieNeed = (int) (447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age));
+            calorieNeed = (int) (655.1 + (9.56 * weight) + (1.85 * height) - (4.67 * age));
         }
         return calorieNeed;
     }
