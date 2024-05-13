@@ -2,6 +2,7 @@ package com.betulgulec.app;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,6 +44,7 @@ public class MenuFragment extends Fragment {
     private EditText searchEditText;
     private TextView foodName, foodCalori;
     private Button btnekle;
+    private  Button btnMenu;
     private CardView cardView;
 
     @Override
@@ -72,6 +74,7 @@ public class MenuFragment extends Fragment {
         foodCalori = view.findViewById(R.id.foodCalori);
         btnekle = view.findViewById(R.id.btnekle);
         cardView = view.findViewById(R.id.cardView);
+        btnMenu=view.findViewById(R.id.btnMenu);
 
         loadFoodItems();
 
@@ -111,6 +114,16 @@ public class MenuFragment extends Fragment {
                 }
             }
         });
+
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenuFragment.this.getContext(), ShowMenu.class);
+                startActivity(intent);
+            }
+        });
+
+
 
         // EditText'i başlat
         searchEditText = view.findViewById(R.id.searchEditText);
@@ -225,4 +238,6 @@ public class MenuFragment extends Fragment {
             }
         });
     }
+
+
 }

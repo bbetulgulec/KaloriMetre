@@ -116,6 +116,14 @@
                 android:onClick="selectFood"
                 android:text="EKLE" />
 
+            <Button
+                android:id="@+id/btnMenu"
+                style="@style/btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Menü" />
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

@@ -4,4 +4,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#5DB075</color>
     <color name="textyellow">#B7f497</color>
+    <color name="colorPrimary">#212121</color> <!-- Ana rengimiz -->
+    <color name="colorPrimaryDark">#000000</color> <!-- Gölgeler ve statü çubuğu arkaplanı için -->
+    <color name="colorAccent">#FF4081</color> <!-- Vurgu rengi -->
+    <color name="backgroundColor">#303030</color> <!-- Arka plan rengi -->
+    <color name="textColorPrimary">#FFFFFF</color> <!-- Ana metin rengi -->
+    <color name="textColorSecondary">#B3FFFFFF</color> <!-- İkincil metin rengi -->
+
 </resources>

@@ -17,53 +17,5 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 
-    <!-- Floating Action Menu -->
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/floatingMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        app:menu_animationDelayPerItem="0"
-        app:menu_colorNormal="@color/green"
-        app:menu_colorPressed="@color/white"
-        app:menu_colorRipple="@color/green"
-        app:menu_fab_label="iptal"
-        app:menu_fab_size="normal"
-        app:menu_icon="@drawable/arti"
-        app:menu_labels_ellipsize="end"
-        app:menu_labels_singleLine="true">
 
-        <!-- Floating Action Buttons -->
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_Icecek"
-            android:layout_width="84dp"
-            android:layout_height="72dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/fab_icecek"
-            app:fab_colorNormal="@color/white"
-            app:fab_label="İçecek"
-            app:fab_size="mini" />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/FAB_Yemek"
-            android:layout_width="84dp"
-            android:layout_height="72dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/fab_yemek"
-            app:fab_colorNormal="@color/white"
-            app:fab_label="Yemek"
-            app:fab_size="mini" />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_Tatli"
-            android:layout_width="84dp"
-            android:layout_height="72dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/fab_tatli"
-            app:fab_colorNormal="@color/white"
-            app:fab_label="Tatlı"
-            app:fab_size="mini" />
-
-    </com.github.clans.fab.FloatingActionMenu>
 </FrameLayout>
