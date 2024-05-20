@@ -44,7 +44,7 @@
         andorid:layout_constraintTop_toBottomOf="@id/header">
 
         <TextView
-            android:id="@+id/monday_label"
+            android:id="@+id/day1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -69,7 +69,7 @@
         andorid:layout_constraintTop_toBottomOf="@id/monday_row">
 
         <TextView
-            android:id="@+id/tuesday_label"
+            android:id="@+id/day2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -94,7 +94,7 @@
         andorid:layout_constraintTop_toBottomOf="@id/tuesday_row">
 
         <TextView
-            android:id="@+id/wednesday_label"
+            android:id="@+id/day3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -119,7 +119,7 @@
         andorid:layout_constraintTop_toBottomOf="@id/wednesday_row">
 
         <TextView
-            android:id="@+id/thursday_label"
+            android:id="@+id/day4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -144,7 +144,7 @@
         andorid:layout_constraintTop_toBottomOf="@id/thursday_row">
 
         <TextView
-            android:id="@+id/friday_label"
+            android:id="@+id/day5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -169,7 +169,7 @@
         andorid:layout_constraintTop_toBottomOf="@id/friday_row">
 
         <TextView
-            android:id="@+id/saturday_label"
+            android:id="@+id/day6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -194,7 +194,7 @@
         andorid:layout_constraintTop_toBottomOf="@id/saturday_row">
 
         <TextView
-            android:id="@+id/sunday_label"
+            android:id="@+id/day7"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

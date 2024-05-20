@@ -53,13 +53,13 @@ public class FirebaseHelper {
         DatabaseReference dailyDataRef = userRef.child("dailydata").child(todaysDate);
 
         // Todaysfood alt düğümü oluştur
-                DatabaseReference todaysFoodRef = dailyDataRef.child("todaysfood");
+        DatabaseReference todaysFoodRef = dailyDataRef.child("todaysfood");
 
         // todaystotalcalories alanını 0 olarak başlat
-                dailyDataRef.child("todaystotalcalories").setValue(0);
+        dailyDataRef.child("todaystotalcalories").setValue(0);
 
         // foodname alanını boş string olarak başlat
-                todaysFoodRef.child("foodname").setValue("");
+        todaysFoodRef.child("foodname").setValue("");
 
 
         // Weekly calories oluştur
@@ -131,16 +131,60 @@ public class FirebaseHelper {
             }
         });
 
-        // foodname ve calorie alt düğümlerine yiyecek adını ve kaloriyi ekle
+        // todaysfood alt düğümüne yemek adını key ve kaloriyi value olarak ekle
         DatabaseReference todaysFoodRef = dailyDataRef.child("todaysfood");
-        DatabaseReference foodNameRef = todaysFoodRef.child("foodname");
-        DatabaseReference calorieRef = todaysFoodRef.child("calories");
 
-        // Yeni bir yemek için bir key oluştur
-        String newFoodKey = foodNameRef.push().getKey();
+        todaysFoodRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean foodExists = false;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String existingFoodName = snapshot.getKey();
+                    Integer existingCalories = snapshot.getValue(Integer.class);
 
-        // Yeni yemeğin adını ve kalorisini ekleyin
-        foodNameRef.child(newFoodKey).setValue(foodName);
-        calorieRef.child(newFoodKey).setValue(calorie);
+                    if (existingFoodName != null && existingFoodName.startsWith(foodName)) {
+                        foodExists = true;
+                        int currentCount = 1;
+
+                        // İsim formatını kontrol et ve varsa sayıyı artır
+                        int startIndex = existingFoodName.lastIndexOf('(');
+                        int endIndex = existingFoodName.lastIndexOf(')');
+                        if (startIndex != -1 && endIndex != -1 && endIndex > startIndex) {
+                            try {
+                                currentCount = Integer.parseInt(existingFoodName.substring(startIndex + 1, endIndex)) + 1;
+                                String newFoodName = foodName + " (" + currentCount + ")";
+                                int newCalories = existingCalories + calorie;
+
+                                // Güncellenmiş ismi ve kaloriyi veritabanına kaydet
+                                todaysFoodRef.child(existingFoodName).removeValue();
+                                todaysFoodRef.child(newFoodName).setValue(newCalories);
+                            } catch (NumberFormatException e) {
+                                Log.e("Firebase Database", "Yemek ismi format hatası: " + e.getMessage());
+                            }
+                        } else {
+                            // İlk defa sayı ekleniyor, "(2)" olarak güncelle
+                            String newFoodName = foodName + " (2)";
+                            int newCalories = existingCalories + calorie;
+
+                            // Güncellenmiş ismi ve kaloriyi veritabanına kaydet
+                            todaysFoodRef.child(existingFoodName).removeValue();
+                            todaysFoodRef.child(newFoodName).setValue(newCalories);
+                        }
+                        break;
+                    }
+                }
+
+                if (!foodExists) {
+                    // Aynı isimde yiyecek yoksa doğrudan ekle
+                    todaysFoodRef.child(foodName).setValue(calorie);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Firebase Database", "Veritabanı hatası: " + databaseError.getMessage());
+            }
+        });
     }
+
 }

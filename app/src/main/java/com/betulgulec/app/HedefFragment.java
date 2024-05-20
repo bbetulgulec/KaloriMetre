@@ -1,7 +1,8 @@
 package com.betulgulec.app;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,127 +22,147 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 public class HedefFragment extends Fragment {
 
     private DatabaseReference mDatabase;
     private FirebaseUser mCurrentUser;
-    private TextView[] dayLabels;
-    private ProgressBar[] progressBars;
+    private TextView day1TextView; // TextView for day 1
+    private TextView day2TextView; // TextView for day 2
+    private TextView day3TextView; // TextView for day 3
+    private TextView day4TextView; // TextView for day 4
+    private TextView day5TextView; // TextView for day 5
+    private TextView day6TextView; // TextView for day 6
+    private TextView day7TextView; // TextView for day 7
+    private ProgressBar progressBar1; // Progress bar 1
+    private ProgressBar progressBar2; // Progress bar 2
+    private ProgressBar progressBar3; // Progress bar 3
+    private ProgressBar progressBar4; // Progress bar 4
+    private ProgressBar progressBar5; // Progress bar 5
+    private ProgressBar progressBar6; // Progress bar 6
+    private ProgressBar progressBar7; // Progress bar 7
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_hedef, container, false);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+        // Firebase user and references
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUser.getUid());
 
-        // Gün etiketlerini ve progress barları tanımla
-        dayLabels = new TextView[]{
-                view.findViewById(R.id.monday_label),
-                view.findViewById(R.id.tuesday_label),
-                view.findViewById(R.id.wednesday_label),
-                view.findViewById(R.id.thursday_label),
-                view.findViewById(R.id.friday_label),
-                view.findViewById(R.id.saturday_label),
-                view.findViewById(R.id.sunday_label)
-        };
-        progressBars = new ProgressBar[]{
-                view.findViewById(R.id.progressBar1),
-                view.findViewById(R.id.progressBar2),
-                view.findViewById(R.id.progressBar3),
-                view.findViewById(R.id.progressBar4),
-                view.findViewById(R.id.progressBar5),
-                view.findViewById(R.id.progressBar6),
-                view.findViewById(R.id.progressBar7)
-        };
+        // Initialize views
+        day1TextView = view.findViewById(R.id.day1);
+        day2TextView = view.findViewById(R.id.day2);
+        day3TextView = view.findViewById(R.id.day3);
+        day4TextView = view.findViewById(R.id.day4);
+        day5TextView = view.findViewById(R.id.day5);
+        day6TextView = view.findViewById(R.id.day6);
+        day7TextView = view.findViewById(R.id.day7);
+        progressBar1 = view.findViewById(R.id.progressBar1);
+        progressBar2 = view.findViewById(R.id.progressBar2);
+        progressBar3 = view.findViewById(R.id.progressBar3);
+        progressBar4 = view.findViewById(R.id.progressBar4);
+        progressBar5 = view.findViewById(R.id.progressBar5);
+        progressBar6 = view.findViewById(R.id.progressBar6);
+        progressBar7 = view.findViewById(R.id.progressBar7);
 
-        // Gün etiketlerini güncelle
-        updateDayLabels();
+        // Get today's date
+        Calendar calendar = Calendar.getInstance();
+        String todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.getTime());
 
-        // ProgressBar'ların değerlerini güncelle
-        updateProgressBars();
+        // Set max value of all progress bars to targetCalories under user ID
+        userRef.child("targetCalories").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    int targetCalories = snapshot.getValue(Integer.class);
+                    progressBar1.setMax(targetCalories);
+                    progressBar2.setMax(targetCalories);
+                    progressBar3.setMax(targetCalories);
+                    progressBar4.setMax(targetCalories);
+                    progressBar5.setMax(targetCalories);
+                    progressBar6.setMax(targetCalories);
+                    progressBar7.setMax(targetCalories);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle database error
+            }
+        });
+
+        // Update each progress bar value with respective date's calories
+        updateProgressBar(userRef, progressBar1, todayDate);
+        updateProgressBar(userRef, progressBar2, getPreviousDate(todayDate, 1));
+        updateProgressBar(userRef, progressBar3, getPreviousDate(todayDate, 2));
+        updateProgressBar(userRef, progressBar4, getPreviousDate(todayDate, 3));
+        updateProgressBar(userRef, progressBar5, getPreviousDate(todayDate, 4));
+        updateProgressBar(userRef, progressBar6, getPreviousDate(todayDate, 5));
+        updateProgressBar(userRef, progressBar7, getPreviousDate(todayDate, 6));
+
+        // Update TextViews with respective dates
+        day1TextView.setText(todayDate);
+        day2TextView.setText(getPreviousDate(todayDate, 1));
+        day3TextView.setText(getPreviousDate(todayDate, 2));
+        day4TextView.setText(getPreviousDate(todayDate, 3));
+        day5TextView.setText(getPreviousDate(todayDate, 4));
+        day6TextView.setText(getPreviousDate(todayDate, 5));
+        day7TextView.setText(getPreviousDate(todayDate, 6));
 
         return view;
     }
 
-    // Gün etiketlerini güncelleyen metod
-    private void updateDayLabels() {
-        // Haftanın günlerini al
+    // Helper method to get previous date
+    private String getPreviousDate(String currentDate, int daysBefore) {
         Calendar calendar = Calendar.getInstance();
-        List<String> daysOfWeek = new ArrayList<>();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        for (int i = 0; i < 7; i++) {
-            daysOfWeek.add(dateFormat.format(calendar.getTime()));
-            calendar.add(Calendar.DAY_OF_YEAR, 1); // Bir sonraki güne geç
+        try {
+            calendar.setTime(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(currentDate));
+            calendar.add(Calendar.DAY_OF_YEAR, -daysBefore);
+            return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return currentDate;
         }
-
-        // Veritabanından haftanın tarihlerini çek
-        mDatabase.child("users").child(mCurrentUser.getUid()).child("weeklycalories")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            // Tarihler listesi
-                            List<String> dates = new ArrayList<>();
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                dates.add(snapshot.getKey());
-                            }
-
-                            // Tarihleri sırala
-                            for (int i = 0; i < Math.min(daysOfWeek.size(), dates.size()); i++) {
-                                TextView dayLabel = dayLabels[i];
-                                String date = dates.get(i);
-                                // Gün etiketlerini tarihlerle güncelle
-                                dayLabel.setText(date);
-                            }
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        // Veritabanı hatası
-                    }
-                });
     }
 
-    // ProgressBar'ların değerlerini güncelleyen metod
-    private void updateProgressBars() {
-        // Firebase'den haftanın tarihlerini al ve en büyük değeri bul
-        DatabaseReference weeklyCaloriesRef = mDatabase.child("users").child(mCurrentUser.getUid()).child("weeklycalories");
-        weeklyCaloriesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    // Helper method to update progress bar with respective date's calories
+    private void updateProgressBar(DatabaseReference userRef, ProgressBar progressBar, String date) {
+        DatabaseReference caloriesRef = userRef.child("weeklycalories").child(date);
+        caloriesRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int maxValue = 0;
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    int value = snapshot.getValue(Integer.class);
-                    if (value > maxValue) {
-                        maxValue = value;
-                    }
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    int calories = snapshot.getValue(Integer.class);
+                    progressBar.setProgress(calories);
+                    setProgressBarColor(progressBar);
                 }
-
-                // Başlangıç değeri ayarla
-                int startValue = 100; // Başlangıç değeri
-
-                // ProgressBar değerlerini ayarla
-                for (ProgressBar progressBar : progressBars) {
-                    progressBar.setProgress(startValue);
-                    progressBar.setMax(maxValue);
-                }
-
-                // progressBar7'nin maksimum değerini güncelle
-                progressBars[6].setMax(maxValue);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Veritabanı hatası
-                Log.e("Firebase Database", "Veritabanı hatası: " + databaseError.getMessage());
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle database error
             }
         });
+    }
+
+    // Helper method to set progress bar color based on progress percentage
+    private void setProgressBarColor(ProgressBar progressBar) {
+        int totalCalories = progressBar.getProgress();
+        int targetCalories = progressBar.getMax();
+        double progressPercentage = (double) totalCalories / targetCalories * 100;
+        int progressColor;
+        if (progressPercentage >= 75) {
+            progressColor = Color.RED; // Red if progress is 75% or more
+        } else if (progressPercentage >= 50) {
+            progressColor = Color.parseColor("#FFA500"); // Orange if progress is between 50% and 75%
+        } else if (progressPercentage >= 25) {
+            progressColor = Color.YELLOW; // Yellow if progress is between 25% and 50%
+        } else {
+            progressColor = Color.GREEN; // Default color is green
+        }
+        progressBar.setProgressTintList(ColorStateList.valueOf(progressColor));
     }
 }
