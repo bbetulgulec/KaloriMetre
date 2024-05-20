@@ -8,6 +8,15 @@
     tools:context=".AnasayfaFragment">
 
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="250dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textViewGünlükVeriler"
         android:layout_width="wrap_content"
@@ -30,13 +39,14 @@
         tools:ignore="MissingConstraints" />
 
     <!-- PROGRESS BAR  -->
+
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="305dp"
         android:layout_height="77dp"
         android:layout_gravity="center"
-        android:layout_marginTop="376dp"
+        android:layout_marginTop="456dp"
         android:progressDrawable="@drawable/green_progress_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.632"
@@ -48,6 +58,7 @@
         android:layout_height="30dp"
         android:layout_gravity="right"
         android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/progressBar"
         app:layout_constraintTop_toBottomOf="@+id/progressBar">
 

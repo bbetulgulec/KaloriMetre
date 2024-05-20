@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,19 +21,23 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class AnasayfaFragment extends Fragment {
+
+    RecyclerView recyclerView;
     private TextView textViewHedef;
     private TextView textViewAlinanCalori;
     private ProgressBar progressBar;
     private int targetCalories;
     private DatabaseReference todaysTotalCaloriesRef;
+    private ValueEventListener valueEventListener;
 
     @Nullable
     @Override
@@ -41,11 +47,16 @@ public class AnasayfaFragment extends Fragment {
         textViewAlinanCalori = view.findViewById(R.id.textViewalınanCalori);
         progressBar = view.findViewById(R.id.progressBar);
 
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         // Firebase'den hedef kaloriyi al ve textViewHedef'e ayarla
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+            DatabaseReference dailyDataRef = userRef.child("dailydata").child(getTodayDate()); // dailyDataRef tanımı burada yapıldı
             userRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -55,20 +66,19 @@ public class AnasayfaFragment extends Fragment {
                             targetCalories = user.getTargetCalories();
                             textViewHedef.setText(String.valueOf(targetCalories));
 
-                            // Progres barının maksimum değerini hedef kalori olarak ayarla
+                            // Progress barının maksimum değerini hedef kalori olarak ayarla
                             progressBar.setMax(targetCalories);
 
                             // todaystotalcalories değerini dinlemek için referans oluştur
-                            DatabaseReference dailyDataRef = userRef.child("dailydata").child(getTodayDate());
                             todaysTotalCaloriesRef = dailyDataRef.child("todaystotalcalories");
 
                             // todaystotalcalories değerini dinlemeye başla
-                            todaysTotalCaloriesRef.addValueEventListener(new ValueEventListener() {
+                            valueEventListener = new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if (snapshot.exists()) {
                                         int todaysTotalCalories = snapshot.getValue(Integer.class);
-                                        // Progres barının ilerlemesini todaystotalcalories değerine ayarla
+                                        // Progress barının ilerlemesini todaystotalcalories değerine ayarla
                                         progressBar.setProgress(todaysTotalCalories);
                                         textViewAlinanCalori.setText(String.valueOf(todaysTotalCalories));
 
@@ -90,7 +100,8 @@ public class AnasayfaFragment extends Fragment {
                                 public void onCancelled(@NonNull DatabaseError error) {
                                     // Veritabanı erişiminde hata oluştuğunda yapılacak işlemler
                                 }
-                            });
+                            };
+                            todaysTotalCaloriesRef.addValueEventListener(valueEventListener);
                         }
                     }
                 }
@@ -100,7 +111,33 @@ public class AnasayfaFragment extends Fragment {
                     // Veritabanı erişiminde hata oluştuğunda yapılacak işlemler
                 }
             });
+
+            // Firebase verilerini RecyclerView'e yükle
+            DatabaseReference foodRef = dailyDataRef.child("todaysfood");
+            foodRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        List<String> yemekList = new ArrayList<>();
+                        List<String> kaloriList = new ArrayList<>();
+                        for (DataSnapshot foodSnapshot : snapshot.getChildren()) {
+                            String yemekIsmi = foodSnapshot.getKey();
+                            String kalori = String.valueOf(foodSnapshot.getValue());
+                            yemekList.add(yemekIsmi);
+                            kaloriList.add(kalori);
+                        }
+                        BenimAdapter adapter = new BenimAdapter(AnasayfaFragment.this, yemekList.toArray(new String[0]), kaloriList.toArray(new String[0]));
+                        recyclerView.setAdapter(adapter);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Veritabanı erişiminde hata oluştuğunda yapılacak işlemler
+                }
+            });
         }
+
 
         return view;
     }
@@ -115,10 +152,8 @@ public class AnasayfaFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         // todaystotalcalories değerini dinlemeyi durdur
-        Query todaysCaloriesRef = null;
-        ValueEventListener todaysCaloriesListener = null;
-        if (todaysCaloriesRef != null && todaysCaloriesListener != null) {
-            todaysCaloriesRef.removeEventListener(todaysCaloriesListener);
+        if (todaysTotalCaloriesRef != null && valueEventListener != null) {
+            todaysTotalCaloriesRef.removeEventListener(valueEventListener);
         }
     }
 }
